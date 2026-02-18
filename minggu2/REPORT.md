@@ -36,3 +36,48 @@ Jawaban
 * Total RAM: 1.8 GiB
 * Total Swap: 1.0 GiB
 * Perbedaan RAM vs swap: Ram adalah penyimpanan data utama yang sangat cepat untuk menjalankan program secara langsung. Sedangkan swap berfungsi sebagai memori virtual di dalam hard drive yang baru akan aktif ketika RAM tidak lagi mampu menampung beban aplikasi yang berjalan.
+
+## Praktikum 2.2: Identifikasi Perangkat PCI/USB dan Driver
+Tujuan: mengenali perangkat PCI/USB dan melihat driver/modul yang dipakai.
+
+### Langkah-langkah
+1. Lihat daftar perangkat PCI:
+```bash
+lspci
+```
+![daftar PCI](img/Langkah2.2-1.jpg)
+
+2. Lihat perangkat PCI beserta driver kernel yang digunakan:
+```bash
+lspci -nnk
+```
+![perangkat PCI yang digunakan](img/Langkah2.2-2.jpg) 
+
+3. Fokus pada NIC (Ethernet) untuk mencari modul driver:
+```bash
+lspci - nnk | grep - A3 -i ethernet
+```
+![modul Driver](img/Langkah2.2-3.jpg) 
+
+4. Lihat perangkat USB:
+```bash
+lsusb
+```
+![perangkat USB](img/Langkah2.2-4.jpg) 
+
+5. Lihat topologi USB (tree):
+```bash
+lsusb -t
+```
+![tree topologi USB](img/Langkah2.2-5.jpg) 
+
+### Latihan 2.2
+Temukan 1 perangkat PCI (misal NIC) dan tuliskan: Vendor:Device ID (angka
+heksadesimal), nama driver/modul kernel, dan deskripsi singkat fungsinya.
+
+Jawaban
+
+* Vendor:Device ID | 1af4:1043
+* Perangkat | SCSI storage controller
+* Driver/Modul Kernel	| virtio-pci
+* Deskripsi Fungsi | Berfungsi sebagai pengontrol penyimpanan data virtual yang memungkinkan sistem operasi berkomunikasi dengan media penyimpanan (disk) menggunakan protokol Virtio untuk performa tinggi di lingkungan virtualisasi.
