@@ -138,3 +138,25 @@ lsmod | grep -i loop
 dmesg -T | tail -n 20
 ```
 ![pesan kernel](img/Langkah2.4-5.jpg) 
+
+## Praktikum 2.5: Konfigurasi Auto-load dan Blacklist
+Tujuan: memahami cara membuat modul otomatis dimuat atau diblokir.
+
+### Langkah-langkah
+1. Buat file auto-load:
+```bash
+echo "loop" | sudo tee /etc/modules-load.d/loop.conf
+```
+![file auto-load](img/Langkah2.5-1.jpg)
+
+2. Simulasikan verifikasi (tanpa reboot) dengan memastikan modul sudah aktif:
+```bash
+lsmod | grep -i loop
+```
+![simulasi verifikasi modul](img/Langkah2.5-2.jpg) 
+
+3. (Opsional, konsep) blacklist modul:
+```bash
+# echo "blacklist loop" | sudo tee /etc/modprobe .d/blacklist-loop.conf
+```
+![modul loop](img/Langkah2.5-3.jpg) 
