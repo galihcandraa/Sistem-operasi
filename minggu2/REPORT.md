@@ -160,3 +160,34 @@ lsmod | grep -i loop
 # echo "blacklist loop" | sudo tee /etc/modprobe .d/blacklist-loop.conf
 ```
 ![modul loop](img/Langkah2.5-3.jpg) 
+
+## Praktikum 2.6: Mengenali Block vs Character Device
+Tujuan: membedakan perangkat disk vs terminal
+
+### Langkah-langkah
+1. Lihat detail salah satu disk (sesuaikan dengan perangkat Anda, misal sda)
+```bash
+ls -l /dev/sda
+```
+Berdasarkan hasil lsblk, disk utama sistem saya adalah /dev/sdd karena ter-mount pada direktori root (/).
+![detail disk](img/Langkah2.6-1.jpg)
+
+2. Lihat detail device terminal:
+```bash
+ls -l /dev/tty
+```
+![detail device terminal](img/Langkah2.6-2.jpg) 
+
+3. Lihat disk dan partisi untuk mengaitkan dengan /dev:
+```bash
+lsblk
+```
+![disk dan partisi](img/Langkah2.6-3.jpg) 
+
+### Latihan 2.3
+Dari output ls -l, jelaskan perbedaan penanda file untuk block device dan
+character device. (Hint: karakter pertama pada permission string)
+
+Jawaban
+
+Perbedaan penanda file block device dan character device bisa dilihat dari karakter pertama pada output ls -1. Block device dapat ditandai dengan huruf b, sedangkan character device ditandai dengan huruf c. 
