@@ -81,3 +81,25 @@ Jawaban
 * Perangkat | SCSI storage controller
 * Driver/Modul Kernel	| virtio-pci
 * Deskripsi Fungsi | Berfungsi sebagai pengontrol penyimpanan data virtual yang memungkinkan sistem operasi berkomunikasi dengan media penyimpanan (disk) menggunakan protokol Virtio untuk performa tinggi di lingkungan virtualisasi.
+
+## Praktikum 2.3: Identifikasi Storage dan Filesystem
+Tujuan: memahami disk/partisi dan filesystem yang terpasang
+
+### Langkah-langkah
+1. Lihat daftar disk/partisi:
+```bash
+lsblk -f
+```
+![daftar disk](img/Langkah2.3-1.jpg)
+
+2. Tampilkan UUID dan tipe filesystem:
+```bash
+sudo blkid
+```
+![tampilan uuid](img/Langkah2.3-2.jpg) 
+
+3. Lihat mount point untuk root filesystem:
+```bash
+findmnt /
+```
+![mount point](img/Langkah2.3-3.jpg) 
