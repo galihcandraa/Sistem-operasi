@@ -103,3 +103,38 @@ sudo blkid
 findmnt /
 ```
 ![mount point](img/Langkah2.3-3.jpg) 
+
+## Praktikum 2.4: Melihat Modul Aktif dan Informasinya
+Tujuan: mengenal modul aktif dan keterkaitannya dengan perangkat.
+
+### Langkah-langkah
+1. Cek versi kernel:
+```bash
+uname -r
+```
+![versi kernel](img/Langkah2.4-1.jpg)
+
+2. Tampilkan daftar modul aktif:
+```bash
+lsmod | head
+```
+![modul aktif](img/Langkah2.4-2.jpg) 
+
+3. Pilih salah satu modul (contoh aman: loop) dan lihat detailnya:
+```bash
+modinfo loop
+```
+![modul loop](img/Langkah2.4-3.jpg) 
+
+4. Muat modul (jika belum aktif), lalu verifikasi:
+```bash
+sudo modprobe loop
+lsmod | grep -i loop
+```
+![muat modul](img/Langkah2.4-4.jpg) 
+
+5. (Opsional) lihat pesan kernel terbaru:
+```bash
+dmesg -T | tail -n 20
+```
+![pesan kernel](img/Langkah2.4-5.jpg) 
