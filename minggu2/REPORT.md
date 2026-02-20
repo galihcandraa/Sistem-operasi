@@ -447,3 +447,14 @@ Jawaban
 Pilih satu port yang listening dari output ss -tulpn(misal port 22), lalu
 tuliskan service/proses yang membukanya. Jelaskan kegunaan port tersebut
 secara singkat.
+
+
+## Latihan
+
+### Latihan 2.A
+Jalankan lspci -nnk. Pilih 1 perangkat PCI dan tuliskan: nama perangkat,
+ID vendor:device, dan kernel driver in use.
+
+Jawaban
+Perangkat PCI yang saya pilih adalah SCSI storage controller dengan nama Red Hat, Inc. Virtio 1.0 console. Perangkat tersebut memiliki ID vendor:device 1af4:1043 dan menggunakan kernel driver virtio-pci.
+![daftar PCI](img/Latihan2.a.jpg)
