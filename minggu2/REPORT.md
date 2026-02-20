@@ -489,3 +489,12 @@ di atas 70%.
 
 Jawaban:
 ![filesystem disk > 70%](img/Latihan2.e.jpg)
+
+### Latihan 2.F
+Jalankan sleep 600 &. Temukan PID-nya dengan ps. Hentikan dengan
+SIGTERM. Jelaskan beda SIGTERM vs SIGKILL.
+
+Jawaban:
+![sleep 600](img/Latihan2.f.jpg)
+Perbedaan SIGTERM dan SIGKILL:
+* SIGTERM menghentikan proses secara normal dan masih memberi kesempatan proses untuk melakukan cleanup, sedangkan SIGKILL langsung mematikan proses secara paksa tanpa bisa ditangkap oleh program.
