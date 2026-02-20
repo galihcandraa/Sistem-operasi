@@ -414,3 +414,36 @@ systemctl --failed
 journalctl -xe | tail -n 50
 ```
 ![ambil log error](img/Langkah2.15-5.jpg) 
+
+## Praktikum 2.16: Monitoring Port dan Koneksi(Network Basics)
+Tujuan: melihat interface, routing, dan port yang sedang listen (berguna untuk
+troubleshooting service).
+
+1. Lihat interface dan IP:
+```bash
+ip a
+```
+![interface & IP](img/Langkah2.16-1.jpg)
+
+2. Lihat routing table:
+```bash
+ip r
+```
+![routing table](img/Langkah2.16-2.jpg) 
+
+3. Lihat port yang sedang listening:
+```bash
+sudo ss -tulpn
+```
+![port listening](img/Langkah2.16-3.jpg) 
+
+### Latihan 2.5
+Pilih satu port yang listening dari output ss -tulpn(misal port 22), lalu
+tuliskan service/proses yang membukanya. Jelaskan kegunaan port tersebut
+secara singkat.
+
+Jawaban
+
+Pilih satu port yang listening dari output ss -tulpn(misal port 22), lalu
+tuliskan service/proses yang membukanya. Jelaskan kegunaan port tersebut
+secara singkat.
