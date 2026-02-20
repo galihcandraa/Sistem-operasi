@@ -498,3 +498,11 @@ Jawaban:
 ![sleep 600](img/Latihan2.f.jpg)
 Perbedaan SIGTERM dan SIGKILL:
 * SIGTERM menghentikan proses secara normal dan masih memberi kesempatan proses untuk melakukan cleanup, sedangkan SIGKILL langsung mematikan proses secara paksa tanpa bisa ditangkap oleh program.
+
+### Latihan 2.G
+Gunakan systemctl –failed. Jika tidak ada yang gagal, pilih satu service
+aktif (misal ssh) dan tampilkan status serta 30 baris log terakhirnya.
+
+Jawaban: 
+![sleep 600](img/Latihan2.g1.jpg)
+![sleep 600](img/Latihan2.g2.jpg)
