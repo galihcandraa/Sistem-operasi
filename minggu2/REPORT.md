@@ -457,4 +457,15 @@ ID vendor:device, dan kernel driver in use.
 
 Jawaban
 Perangkat PCI yang saya pilih adalah SCSI storage controller dengan nama Red Hat, Inc. Virtio 1.0 console. Perangkat tersebut memiliki ID vendor:device 1af4:1043 dan menggunakan kernel driver virtio-pci.
+
 ![daftar PCI](img/Latihan2.a.jpg)
+
+### Latihan 2.B
+Tentukan device root filesystem dengan findmnt /. Lalu cocokkan dengan
+lsblk -f dan tuliskan tipe filesystem serta UUID-nya
+
+Jawaban: 
+Berdasarkan perintah findmnt /, device root filesystem adalah /dev/sdd.
+Setelah dicocokkan menggunakan lsblk -f, tipe filesystem yang digunakan adalah ext4 dengan UUID d21254b8-78d5-430c-89ac-a67606e0169e.
+
+![device root](img/Latihan2.b.jpg)
