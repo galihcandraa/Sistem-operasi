@@ -469,3 +469,10 @@ Berdasarkan perintah findmnt /, device root filesystem adalah /dev/sdd.
 Setelah dicocokkan menggunakan lsblk -f, tipe filesystem yang digunakan adalah ext4 dengan UUID d21254b8-78d5-430c-89ac-a67606e0169e.
 
 ![device root](img/Latihan2.b.jpg)
+
+
+### Latihan 2.C
+Buat file server.log berisi minimal 10 baris dengan variasi kata: INFO, WARN, ERROR. Gunakan grep untuk menampilkan hanya baris ERROR.
+
+Jawaban: 
+![error log](img/Latihan2.c.jpg)
