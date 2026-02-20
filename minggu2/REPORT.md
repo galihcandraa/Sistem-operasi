@@ -275,3 +275,36 @@ WARN dari data.log. (Hint: gunakan grep -E dengan pola alternatif)
 Jawaban
 
 ![menampilkan info / warn](img/Latihan2.4.jpg) 
+
+## Praktikum 2.10: Substitusi dengan sed (Aman di File Latihan)
+
+1. Siapkan file konfigurasi latihan:
+```bash
+1 cat > config.txt << 'EOF'
+2 PORT=8080
+3 MODE=dev
+4 SERVICE_NAME=myserver
+5 EOF
+6 cat config.txt
+```
+![menyiapkan file config](img/Langkah2.10-1.jpg)
+
+2. Ganti dev menjadi prod (tanpa mengubah file asli):
+```bash
+sed 's/MODE=dev/MODE=prod/' config.txt
+```
+![dev jadi prod](img/Langkah2.10-2.jpg) 
+
+3. Terapkan perubahan langsung ke file (-i):
+```bash
+1 sed -i 's/MODE=dev/MODE=prod/' config.txt
+2 cat config.txt
+```
+![menerapkan langsung ke file](img/Langkah2.10-3.jpg) 
+
+4. Ganti semua kemunculan kata (g untuk global), contoh ubah myserver menjadi node:
+```bash
+1 sed -i 's/myserver/node/g' config.txt
+2 cat config.txt
+```
+![mengubah myserver menjadi node](img/Langkah2.10-4.jpg) 
