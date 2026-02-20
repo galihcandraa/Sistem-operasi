@@ -476,3 +476,9 @@ Buat file server.log berisi minimal 10 baris dengan variasi kata: INFO, WARN, ER
 
 Jawaban: 
 ![error log](img/Latihan2.c.jpg)
+
+### Latihan 2.D
+Gunakan sed untuk mengganti semua kata server menjadi node pada file latihan. Tunjukkan sebelum dan sesudah.
+
+Jawaban: 
+![mengganti server menjadi node](img/Latihan2.d.jpg)
