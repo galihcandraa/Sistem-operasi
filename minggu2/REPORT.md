@@ -482,3 +482,10 @@ Gunakan sed untuk mengganti semua kata server menjadi node pada file latihan. Tu
 
 Jawaban: 
 ![mengganti server menjadi node](img/Latihan2.d.jpg)
+
+### Latihan 2.E
+Gunakan df -h lalu awk untuk menampilkan filesystem yang penggunaan disk
+di atas 70%.
+
+Jawaban:
+![filesystem disk > 70%](img/Latihan2.e.jpg)
