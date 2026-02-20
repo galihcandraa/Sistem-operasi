@@ -382,3 +382,35 @@ kill < PID_ANDA >
 ps aux | grep -E "sleep 300" | grep -v grep
 ```
 ![memverifikasi proses berhenti](img/Langkah2.14-4.jpg) 
+
+## Praktikum 2.15: Cek Disk, Load, dan Service
+
+1. Cek penggunaan disk:
+```bash
+df -h
+```
+![penggunaan disk](img/Langkah2.15-1.jpg)
+
+2. Cari direktori yang besar (contoh pada /var):
+```bash
+sudo du -sh /var/* 2>/dev/null | sort -h | tail -n 10
+```
+![mencari direktori](img/Langkah2.15-2.jpg) 
+
+3. Cek load dan uptime:
+```bash
+uptime
+```
+![cek load dan uptime](img/Langkah2.15-3.jpg) 
+
+4. Cek service yang gagal:
+```bash
+systemctl --failed
+```
+![cek service gagal](img/Langkah2.15-4.jpg) 
+
+5. Ambil log error terbaru (jika ada indikasi masalah):
+```bash
+journalctl -xe | tail -n 50
+```
+![ambil log error](img/Langkah2.15-5.jpg) 
