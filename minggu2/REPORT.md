@@ -191,3 +191,19 @@ character device. (Hint: karakter pertama pada permission string)
 Jawaban
 
 Perbedaan penanda file block device dan character device bisa dilihat dari karakter pertama pada output ls -1. Block device dapat ditandai dengan huruf b, sedangkan character device ditandai dengan huruf c. 
+
+## Praktikum 2.7: Melihat Informasi udev
+Tujuan: melihat metadata yang dipakai udev untuk membuat device node
+
+### Langkah-langkah
+1. Cek atribut udev untuk disk:
+```bash
+udevadm info --query=all --name=/dev/sda | head -n 30
+```
+![atribut udev](img/Langkah2.7-1.jpg)
+
+2. (Opsional) monitor event udev (jalankan, lalu colok/lepas USB pada mesin fisik):
+```bash
+sudo udevadm monitor
+```
+![monitor event udev](img/Langkah2.7-2.jpg) 
