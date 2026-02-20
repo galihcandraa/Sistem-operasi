@@ -207,3 +207,37 @@ udevadm info --query=all --name=/dev/sda | head -n 30
 sudo udevadm monitor
 ```
 ![monitor event udev](img/Langkah2.7-2.jpg) 
+
+## Praktikum 2.8: Membuat Workspace Praktikum
+Tujuan: membuat area kerja aman untuk semua latihan bab ini.
+
+### Langkah-langkah
+1. Buat direktori praktikum dan masuk ke dalamnya:
+```bash
+1 mkdir -p ~/praktikum-os/week02
+2 cd ~/praktikum-os/week02
+3 pwd
+```
+![new directory](img/Langkah2.8-1.jpg)
+
+2. Buat beberapa file contoh:
+```bash
+1 touch notes.txt data.log config.txt
+2 ls -lah
+```
+![membuat file](img/Langkah2.8-2.jpg) 
+
+3. Isi file log contoh (simulasi):
+```bash
+1 echo "INFO : service started" >> data.log
+2 echo "WARN : disk usage high" >> data.log
+3 echo "ERROR : failed to connect" >> data.log
+4 cat data.log
+```
+![mengisi file](img/Langkah2.8-3.jpg) 
+
+4. Baca file dengan less:
+```bash
+less data.log
+```
+![baca file with less](img/Langkah2.8-4.jpg) 
