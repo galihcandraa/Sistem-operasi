@@ -328,3 +328,17 @@ df -h | awk 'NR==1 {print $1 , $5 , $6} NR>1 {print $1, $5, $6}'
 df -h | awk 'NR==1 || ($5+0) > 80 {print $1 , $5 , $6}'
 ```
 ![filter > 80%](img/Langkah2.11-3.jpg) 
+
+## Praktikum 2.12: Melihat Proses dengan ps
+
+1. Tampilkan semua proses (format BSD):
+```bash
+ps aux | head
+```
+![tampil semua proses](img/Langkah2.12-1.jpg)
+
+2. Cari proses tertentu (misal sshd):
+```bash
+ps aux | grep -i sshd
+```
+![mencari proses tertentu](img/Langkah2.12-2.jpg) 
