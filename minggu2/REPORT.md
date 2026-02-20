@@ -342,3 +342,17 @@ ps aux | head
 ps aux | grep -i sshd
 ```
 ![mencari proses tertentu](img/Langkah2.12-2.jpg) 
+
+## Praktikum 2.13: Monitoring Real-time dengan top
+
+1. Jalankan top:
+```bash
+top
+```
+![menjalankan top](img/Langkah2.13-1.jpg)
+
+2. Amati nilai load average, pemakaian CPU, dan proses teratas. Tekan q untukkeluar
+```bash
+ps aux | grep -i sshd
+```
+![q untuk keluar dari top](img/Langkah2.13-2.jpg) 
