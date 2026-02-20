@@ -308,3 +308,23 @@ sed 's/MODE=dev/MODE=prod/' config.txt
 2 cat config.txt
 ```
 ![mengubah myserver menjadi node](img/Langkah2.10-4.jpg) 
+
+## Praktikum 2.11: Ekstraksi Kolom dengan awk
+
+1. Lihat output df -h:
+```bash
+df -h
+```
+![output df -h](img/Langkah2.11-1.jpg)
+
+2. Ambil kolom filesystem dan persentase pemakaian:
+```bash
+df -h | awk 'NR==1 {print $1 , $5 , $6} NR>1 {print $1, $5, $6}'
+```
+![ambil kolom filesystem](img/Langkah2.11-2.jpg) 
+
+3. Filter hanya yang pemakaian disk di atas 80%:
+```bash
+df -h | awk 'NR==1 || ($5+0) > 80 {print $1 , $5 , $6}'
+```
+![filter > 80%](img/Langkah2.11-3.jpg) 
