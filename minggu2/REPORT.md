@@ -241,3 +241,37 @@ Tujuan: membuat area kerja aman untuk semua latihan bab ini.
 less data.log
 ```
 ![baca file with less](img/Langkah2.8-4.jpg) 
+
+## Praktikum 2.9: Pencarian Pola dengan grep
+
+1. Cari baris yang mengandung ERROR pada data.log:
+```bash
+grep "ERROR" data.log
+```
+![baris error](img/Langkah2.9-1.jpg)
+
+2. Cari tanpa memperhatikan huruf besar/kecil:
+```bash
+grep -i "error" data.log
+```
+![baris error ignore case](img/Langkah2.9-2.jpg) 
+
+3. Tampilkan nomor baris:
+```bash
+grep -n "WARN" data.log
+```
+![tampil with no baris](img/Langkah2.9-3.jpg) 
+
+4. Tampilkan baris yang tidak cocok (invert match):
+```bash
+grep -v "INFO" data.log
+```
+![invert match](img/Langkah2.9-4.jpg) 
+
+### Latihan 2.4
+Gunakan grep untuk menampilkan hanya baris yang mengandung INFO atau
+WARN dari data.log. (Hint: gunakan grep -E dengan pola alternatif)
+
+Jawaban
+
+![menampilkan info / warn](img/Latihan2.4.jpg) 
