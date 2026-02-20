@@ -356,3 +356,29 @@ top
 ps aux | grep -i sshd
 ```
 ![q untuk keluar dari top](img/Langkah2.13-2.jpg) 
+
+## Praktikum 2.14: Menghentikan Proses dengan kill
+
+1. Jalankan proses dummy di background:
+```bash
+sleep 300 &
+```
+![menjalankan proses dummy](img/Langkah2.14-1.jpg)
+
+2. Cari PID proses sleep:
+```bash
+ps aux | grep -E "sleep 300" | grep -v grep
+```
+![PID proses sleep](img/Langkah2.14-2.jpg) 
+
+3. Hentikan dengan SIGTERM:
+```bash
+kill < PID_ANDA >
+```
+![menghentikan proses](img/Langkah2.14-3.jpg) 
+
+4. Verifikasi proses berhenti:
+```bash
+ps aux | grep -E "sleep 300" | grep -v grep
+```
+![memverifikasi proses berhenti](img/Langkah2.14-4.jpg) 
