@@ -73,3 +73,25 @@ Jawaban
 1. ![wsl install](img/latihan1.3-1.jpg)
 2. ![wsl create user](img/latihan1.3-2.jpg)
 3. ![screen wsl](img/latihan1.3-3.jpg)
+
+#### Latihan 1.4
+Setelah instalasi Ubuntu Server, lakukan tasks berikut:
+1. Update package list: sudo apt update
+![update package](img/latihan1.4-1.jpg)
+
+2. Upgrade packages: sudo apt upgrade
+![upgrade package](img/latihan1.4-2.jpg)
+
+3. Install neofetch: sudo apt install neofetch
+![install neofetch](img/latihan1.4-3.jpg)
+
+4. Jalankan neofetch dan screenshot hasilnya
+![run neofetch](img/latihan1.4-4.jpg)
+
+5. Check disk usage dengan df -h
+![disk usage](img/latihan1.4-5.jpg)
+
+6. Check memory dengan free -h
+![check memory](img/latihan1.4-6.jpg)
+
+7. Dokumentasikan output dari setiap command
