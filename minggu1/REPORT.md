@@ -115,3 +115,26 @@ Eksplorasi sistem yang baru diinstall:
 
 6. Buat laporan singkat tentang konfigurasi sistem Anda
 * Sistem yang digunakan adalah Ubuntu 24.04.4 LTS berbasis WSL2 di Windows 10 dengan spesifikasi perangkat keras entry-level (Intel Celeron N4020 dan RAM 1.8 GB untuk WSL).
+
+### 1.10.3. Latihan Refleksi
+
+#### Latihan 1.6
+Ceritakan pengalaman Anda dengan sistem operasi:
+1. Sistem operasi apa yang Anda gunakan sehari-hari? (Windows, macOS,
+Linux, atau lainnya)
+2. Berapa lama Anda menggunakan sistem operasi tersebut?
+3. Apa yang Anda sukai dari sistem operasi tersebut?
+4. Apa tantangan atau masalah yang pernah Anda hadapi?
+5. Apakah Anda pernah menggunakan sistem operasi lain? Bandingkan
+pengalaman Anda.
+6. Setelah mempelajari bab ini, apakah ada sistem operasi lain yang ingin
+Anda coba? Mengapa?
+Tulis refleksi Anda dalam 300-500 kata disertai dengan dokumentasi.
+
+Jawaban: 
+* Sistem operasi yang saya gunakan sehari-hari adalah Windows 11. Sistem operasi ini menjadi pilihan utama karena digunakan sebagai sistem bawaan pada laptop yang saya miliki serta mendukung hampir seluruh kebutuhan saya, baik untuk perkuliahan, hiburan, maupun aktivitas produktivitas sehari-hari. Saya telah menggunakan Windows sejak pertama kali mengenal komputer, dan secara aktif menggunakan Windows 11 sejak laptop ini digunakan, yaitu selama 3 tahun lebih.
+Hal yang paling saya sukai dari Windows 11 adalah kemudahan penggunaan dan kompatibilitas perangkat lunak yang sangat luas. Hampir semua aplikasi yang saya butuhkan, seperti aplikasi perkantoran, browser, aplikasi desain ringan, dapat berjalan dengan baik di Windows. Selain itu, antarmuka Windows 11 terlihat lebih modern dan rapi, sehingga nyaman digunakan dalam jangka waktu lama. Dukungan driver perangkat keras juga relatif mudah karena sebagian besar perangkat dapat terdeteksi secara otomatis.
+Namun, saya juga pernah menghadapi beberapa tantangan saat menggunakan Windows. Salah satu masalah yang cukup sering ditemui adalah penggunaan resource yang cukup besar, terutama pada perangkat dengan spesifikasi terbatas. Selain itu, update sistem yang berjalan otomatis terkadang mengganggu aktivitas karena membutuhkan restart di waktu yang kurang tepat.
+Selain Windows, saya juga pernah menggunakan Linux, khususnya Ubuntu melalui Windows Subsystem for Linux (WSL2). Pengalaman menggunakan Linux cukup berbeda dibandingkan Windows. Linux terasa lebih ringan dan sangat cocok untuk kegiatan pemrograman serta praktikum sistem operasi. Melalui Linux, saya menjadi lebih terbiasa menggunakan terminal dan memahami cara kerja sistem operasi secara lebih mendalam. Namun, Linux juga memiliki tantangan, seperti kurva belajar yang lebih tinggi dan keterbatasan beberapa aplikasi populer yang tidak tersedia secara native.
+Setelah mempelajari bab ini, saya menjadi tertarik untuk mencoba menggunakan Linux secara penuh (dual boot) atau mencoba distribusi Linux lain seperti Fedora atau Arch Linux. Hal ini karena saya ingin lebih memahami sistem operasi dari sisi internal, seperti manajemen proses, memori, dan file system, serta meningkatkan kemampuan teknis saya di bidang sistem dan pemrograman.
+Sebagai dokumentasi, saya telah melakukan beberapa percobaan menggunakan perintah seperti neofetch untuk melihat informasi sistem, htop untuk memantau penggunaan resource, serta df -h dan free -h untuk mengecek penyimpanan dan memori. Dokumentasi tersebut memperkuat pemahaman saya terhadap konsep sistem operasi yang dipelajari dalam bab ini.
