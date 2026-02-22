@@ -57,3 +57,19 @@ Dalam industri kreatif, macOS sering menjadi pilihan utama karena stabilitas sis
 
 5. Enterprise 
 Dalam lingkungan perusahaan, Windows banyak digunakan sebagai sistem operasi klien karena integrasinya yang kuat dengan layanan Microsoft seperti Microsoft 365 dan Active Directory. Linux lebih sering digunakan pada sisi server karena efisien dan memiliki biaya lisensi yang lebih rendah. macOS biasanya digunakan di perusahaan berbasis teknologi atau industri kreatif, namun tidak seumum Windows dalam enterprise tradisional.
+
+### 1.10.2. Latihan Praktikal
+
+#### Latihan 1.3
+Install Ubuntu Server 22.04 LTS di VirtualBox dengan langkah berikut:
+1. Download Ubuntu Server ISO dari website resmi
+2. Create VM baru di VirtualBox (RAM: 2GB, Disk: 25GB)
+3. Install dengan automatic partitioning (guided)
+4. Buat user account dengan password yang kuat
+5. Reboot dan login ke sistem
+6. Dokumentasikan proses instalasi dengan screenshot key steps
+
+Jawaban
+1. ![wsl install](img/latihan1.3-1.jpg)
+2. ![wsl create user](img/latihan1.3-2.jpg)
+3. ![screen wsl](img/latihan1.3-3.jpg)
