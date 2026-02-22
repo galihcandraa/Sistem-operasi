@@ -95,3 +95,23 @@ Setelah instalasi Ubuntu Server, lakukan tasks berikut:
 ![check memory](img/latihan1.4-6.jpg)
 
 7. Dokumentasikan output dari setiap command
+
+#### Latihan 1.5
+Eksplorasi sistem yang baru diinstall:
+1. Tampilkan informasi OS: cat /etc/os-release
+* ![info os](img/latihan1.5-1.jpg)
+
+2. Tampilkan versi kernel: uname -r
+* ![versi kernel](img/latihan1.5-2.jpg)
+
+3. List partisi: lsblk
+* ![list partisi](img/latihan1.5-3.jpg)
+
+4. Check network connectivity: ping -c 4 google.com
+* ![check network](img/latihan1.5-4.jpg)
+
+5. Install dan jalankan htop untuk melihat resource usage
+* ![htop](img/latihan1.5-5.jpg)
+
+6. Buat laporan singkat tentang konfigurasi sistem Anda
+* Sistem yang digunakan adalah Ubuntu 24.04.4 LTS berbasis WSL2 di Windows 10 dengan spesifikasi perangkat keras entry-level (Intel Celeron N4020 dan RAM 1.8 GB untuk WSL).
