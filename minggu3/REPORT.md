@@ -110,3 +110,45 @@ uuidd
 www-data
 ```
 
+## Latihan 3.3
+Tulis script monitoring yang:
+1. Mencatat penggunaan CPU dan memory setiap 5 detik
+2. Menyimpan log dengan timestamp
+3. Berjalan selama 1 menit (12 iterasi)
+4. Output ditampilkan di terminal DAN disimpan ke file
+
+## Jawaban
+
+### script
+```bash
+LOG="monitor.log"
+
+echo "Monitoring dimulai..." | tee "$LOG"
+
+for i in {1..12}
+do
+    TIME=$(date "+%Y-%m-%d %H:%M:%S")
+    CPU=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
+    MEM=$(free -m | awk '/Mem:/ {print $3 "MB"}')
+
+    echo "$TIME | CPU: $CPU% | RAM: $MEM" | tee -a "$LOG"
+
+    sleep 5
+done
+
+echo "Monitoring selesai." | tee -a "$LOG"
+```
+
+### output
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week03$ nano monitor.sh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week03$ chmod +x monitor.sh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week03$ ./monitor.sh
+Monitoring dimulai...
+2026-02-27 21:37:49 | CPU: 12.5% | RAM: 768MB
+2026-02-27 21:37:55 | CPU: 13% | RAM: 768MB
+2026-02-27 21:38:00 | CPU: 17.2% | RAM: 768MB
+2026-02-27 21:38:05 | CPU: 8.7% | RAM: 768MB
+2026-02-27 21:38:11 | CPU: 4.8% | RAM: 768MB
+2026-02-27 21:38:16 | CPU: 9.6% | RAM: 768MB
+```
