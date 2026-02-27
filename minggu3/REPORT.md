@@ -60,3 +60,53 @@ galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week03$ cat error.log
 find: ‘/var/log/private’: Permission denied
 ```
 
+## Latihan 3.2
+Buat pipeline yang:
+1. Membaca /etc/passwd
+2. Mengekstrak username (kolom pertama)
+3. Mengurutkan alfabetis
+4. Menyimpan ke file sorted-users.txt
+Hint: Gunakan cut, sort, dan operator redirect.
+
+## Jawaban
+
+### pipeline
+```bash
+cut -d: -f1 /etc/passwd | sort > sorted-users.txt
+```
+
+### output
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week03$ cut -d: -f1 /etc/passwd | sort > sorted-users.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week03$ cat sorted-users.txt
+_apt
+backup
+bin
+daemon
+dhcpcd
+galihcandra
+games
+irc
+landscape
+list
+lp
+mail
+man
+messagebus
+news
+nobody
+polkitd
+proxy
+root
+sshd
+sync
+sys
+syslog
+systemd-network
+systemd-resolve
+systemd-timesync
+uucp
+uuidd
+www-data
+```
+
