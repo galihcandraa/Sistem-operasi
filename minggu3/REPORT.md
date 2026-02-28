@@ -152,3 +152,22 @@ Monitoring dimulai...
 2026-02-27 21:38:11 | CPU: 4.8% | RAM: 768MB
 2026-02-27 21:38:16 | CPU: 9.6% | RAM: 768MB
 ```
+
+## Latihan 3.4
+Buat perintah yang:
+1. Mencari semua file .conf di sistem
+2. Membuang pesan "Permission denied"
+3. Menghitung jumlah file yang ditemukan
+4. Menyimpan daftar path lengkap ke file
+
+## Jawaban
+
+### perintah
+```bash
+find /etc -type f -name "*.conf" 2>/dev/null | tee conf-list.txt | wc -l
+```
+### output
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week03$ find /etc -type f -name "*.conf" 2>/dev/null | tee conf-list.txt | wc -l
+104
+```
