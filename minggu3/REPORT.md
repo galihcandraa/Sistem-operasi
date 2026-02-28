@@ -171,3 +171,36 @@ find /etc -type f -name "*.conf" 2>/dev/null | tee conf-list.txt | wc -l
 galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week03$ find /etc -type f -name "*.conf" 2>/dev/null | tee conf-list.txt | wc -l
 104
 ```
+
+## Latihan 3.5
+Implementasikan script backup yang:
+1. Menggunakan tar untuk backup direktori
+2. Menampilkan progress dengan tee
+3. Mencatat stdout ke backup-success.log
+4. Mencatat stderr ke backup-error.log
+5. Menambahkan timestamp di setiap log entry
+
+## Jawaban
+
+### script
+```bash
+tar -cvf backup.tar week03 2> backup-error.log | while read line; do echo "$(date '+%F %T') $line"; done | tee backup-success.log
+```
+### output
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os$ tar -cvf backup.tar week03 2> backup-error.log | while read lin
+e; do echo "$(date '+%F %T') $line"; done | tee backup-success.log
+2026-02-28 09:10:28 week03/
+2026-02-28 09:10:28 week03/monitor.log
+2026-02-28 09:10:28 week03/error.log
+2026-02-28 09:10:28 week03/conf-list.txt
+2026-02-28 09:10:28 week03/conf-lis
+2026-02-28 09:10:28 week03/large-logs.txt
+2026-02-28 09:10:28 week03/backup-error.log
+2026-02-28 09:10:28 week03/backup.tar
+2026-02-28 09:10:28 week03/monitor.sh
+2026-02-28 09:10:28 week03/config.txt
+2026-02-28 09:10:28 week03/largest.sh
+2026-02-28 09:10:28 week03/backup-success.log
+2026-02-28 09:10:28 week03/sorted-users.txt
+```
