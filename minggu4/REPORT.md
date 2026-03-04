@@ -210,3 +210,282 @@ format yang digunakan)
    galihcandra@LAPTOP-QQ597UPT:/$ pwd
    /
    ```
+
+2. Lanjutkan penelusuran pohon pada sistem file menggunakan cd, ls, pwd dan cat. 
+Telusuri direktory /bin, /usr/bin, /sbin, /tmp dan /boot.
+
+   /bin:
+   ```bash
+   galihcandra@LAPTOP-QQ597UPT:/$ cd /bin
+   galihcandra@LAPTOP-QQ597UPT:/bin$ pwd
+   /bin
+   galihcandra@LAPTOP-QQ597UPT:/bin$ ls -al | more
+   total 148864
+   drwxr-xr-x  2 root root       40960 Mar  4 11:18 .
+   drwxr-xr-x 12 root root        4096 Aug  5  2025 ..
+   -rwxr-xr-x  1 root root       14640 Mar 31  2024 411toppm
+   -rwxr-xr-x  1 root root       27008 Mar 31  2024 JxrDecApp
+   -rwxr-xr-x  1 root root       28440 Mar 31  2024 JxrEncApp
+   lrwxrwxrwx  1 root root           4 Feb 11  2024 NF -> col1
+   lrwxrwxrwx  1 root root           1 Apr  8  2024 X11 -> .
+   -rwxr-xr-x  1 root root       55744 Jun 22  2025 [
+   -rwxr-xr-x  1 root root       18744 Aug 15  2025 aa-enabled
+   -rwxr-xr-x  1 root root       18744 Aug 15  2025 aa-exec
+   -rwxr-xr-x  1 root root       18736 Aug 15  2025 aa-features-abi
+   -rwxr-xr-x  1 root root       16422 Jul  3  2025 add-apt-reposit
+   ory
+   -rwxr-xr-x  1 root root       14720 Sep 16 07:08 addpart
+   lrwxrwxrwx  1 root root          26 Dec  3 22:01 addr2line -> x8
+   6_64-linux-gnu-addr2line
+   lrwxrwxrwx  1 root root          25 Mar 31  2024 animate -> /etc
+   /alternatives/animate
+   lrwxrwxrwx  1 root root          29 Mar 31  2024 animate-im6 ->
+   /etc/alternatives/animate-im6
+   -rwxr-xr-x  1 root root       14656 Mar 31  2024 animate-im6.q16
+   -rwxr-xr-x  1 root root       12556 Mar 31  2024 anytopnm
+   -rwxr-xr-x  1 root root        2322 Apr 18  2024 apport-bug
+   -rwxr-xr-x  1 root root       13625 Jul  8  2025 apport-cli
+   lrwxrwxrwx  1 root root          10 Jul  8  2025 apport-collect
+   -> apport-bug
+   -rwxr-xr-x  1 root root        3790 Jul  8  2025 apport-unpack
+   -rwxr-xr-x  1 root root       14648 Apr  1  2024 appres
+   -rwxr-xr-x  1 root root      141544 Apr  8  2024 appstreamcli
+   lrwxrwxrwx  1 root root           6 Apr  8  2024 apropos -> what
+   galihcandra@LAPTOP-QQ597UPT:/bin$ cat zmore
+   #!/bin/sh
+
+   # Copyright (C) 2001-2002, 2007, 2010-2022 Free Software Foundation, Inc.
+   # Copyright (C) 1992, 1993 Jean-loup Gailly
+
+   # This program is free software; you can redistribute it and/or modify
+   # it under the terms of the GNU General Public License as published by
+   # the Free Software Foundation; either version 3 of the License, or
+   # (at your option) any later version.
+
+   # This program is distributed in the hope that it will be useful,
+   # but WITHOUT ANY WARRANTY; without even the implied warranty of
+   # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   # GNU General Public License for more details.
+
+   # You should have received a copy of the GNU General Public License along
+   # with this program; if not, write to the Free Software Foundation, Inc.,
+   # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+   version="zmore (gzip) 1.12
+   Copyright (C) 2010-2018 Free Software Foundation, Inc.
+   This is free software.  You may redistribute copies of it under the terms of
+   the GNU General Public License <https://www.gnu.org/licenses/gpl.html>.
+   There is NO WARRANTY, to the extent permitted by law.
+
+   Written by Jean-loup Gailly."
+
+   usage="Usage: $0 [OPTION]... [FILE]...
+   Like 'more', but operate on the uncompressed contents of any compressed FILEs.
+
+   Report bugs to <bug-gzip@gnu.org>."
+
+   case $1 in
+   --h*) printf '%s\n' "$usage"   || exit 1; exit;;
+   --v*) printf '%s\n' "$version" || exit 1; exit;;
+   --) shift;;
+   -?*) printf >&2 '%s\n' "$0: $1: unknown option; try '$0 --help' for help"
+         exit 1;;
+   esac
+
+   if test $# = 0; then
+      if test -t 0; then
+         printf >&2 '%s\n' "$0: missing operands; try '$0 --help' for help"
+         exit 1
+      fi
+      set -- -
+   fi
+
+   for FILE
+   do
+   test $# -lt 2 ||
+      printf '::::::::::::::\n%s\n::::::::::::::\n' "$FILE" || break
+   gzip -cdfq -- "$FILE"
+   done 2>&1 | eval ${PAGER-more}
+   ```
+
+   /usr/bin:
+   ```bash
+   galihcandra@LAPTOP-QQ597UPT:~$ cd /usr/bin
+   galihcandra@LAPTOP-QQ597UPT:/usr/bin$ pwd
+   /usr/bin
+   galihcandra@LAPTOP-QQ597UPT:/usr/bin$ ls -al | more
+   total 148864
+   drwxr-xr-x  2 root root       40960 Mar  4 11:18 .
+   drwxr-xr-x 12 root root        4096 Aug  5  2025 ..
+   -rwxr-xr-x  1 root root       14640 Mar 31  2024 411toppm
+   -rwxr-xr-x  1 root root       27008 Mar 31  2024 JxrDecApp
+   -rwxr-xr-x  1 root root       28440 Mar 31  2024 JxrEncApp
+   lrwxrwxrwx  1 root root           4 Feb 11  2024 NF -> col1
+   lrwxrwxrwx  1 root root           1 Apr  8  2024 X11 -> .
+   -rwxr-xr-x  1 root root       55744 Jun 22  2025 [
+   -rwxr-xr-x  1 root root       18744 Aug 15  2025 aa-enabled
+   -rwxr-xr-x  1 root root       18744 Aug 15  2025 aa-exec
+   -rwxr-xr-x  1 root root       18736 Aug 15  2025 aa-features-abi
+   -rwxr-xr-x  1 root root       16422 Jul  3  2025 add-apt-reposit
+   ory
+   -rwxr-xr-x  1 root root       14720 Sep 16 07:08 addpart
+   lrwxrwxrwx  1 root root          26 Dec  3 22:01 addr2line -> x8
+   6_64-linux-gnu-addr2line
+   lrwxrwxrwx  1 root root          25 Mar 31  2024 animate -> /etc
+   /alternatives/animate
+   lrwxrwxrwx  1 root root          29 Mar 31  2024 animate-im6 ->
+   /etc/alternatives/animate-im6
+   -rwxr-xr-x  1 root root       14656 Mar 31  2024 animate-im6.q16
+   -rwxr-xr-x  1 root root       12556 Mar 31  2024 anytopnm
+   -rwxr-xr-x  1 root root        2322 Apr 18  2024 apport-bug
+   -rwxr-xr-x  1 root root       13625 Jul  8  2025 apport-cli
+   lrwxrwxrwx  1 root root          10 Jul  8  2025 apport-collect
+   -> apport-bug
+   -rwxr-xr-x  1 root root        3790 Jul  8  2025 apport-unpack
+   -rwxr-xr-x  1 root root       14648 Apr  1  2024 appres
+   -rwxr-xr-x  1 root root      141544 Apr  8  2024 appstreamcli
+   lrwxrwxrwx  1 root root           6 Apr  8  2024 apropos -> what
+   galihcandra@LAPTOP-QQ597UPT:/usr/bin$ cat zcat
+   #!/bin/sh
+   # Uncompress files to standard output.
+
+   # Copyright (C) 2007, 2010-2022 Free Software Foundation, Inc.
+
+   # This program is free software; you can redistribute it and/or modify
+   # it under the terms of the GNU General Public License as published by
+   # the Free Software Foundation; either version 3 of the License, or
+   # (at your option) any later version.
+
+   # This program is distributed in the hope that it will be useful,
+   # but WITHOUT ANY WARRANTY; without even the implied warranty of
+   # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   # GNU General Public License for more details.
+
+   # You should have received a copy of the GNU General Public License along
+   # with this program; if not, write to the Free Software Foundation, Inc.,
+   # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+   version="zcat (gzip) 1.12
+   Copyright (C) 2007, 2011-2018 Free Software Foundation, Inc.
+   This is free software.  You may redistribute copies of it under the terms of
+   the GNU General Public License <https://www.gnu.org/licenses/gpl.html>.
+   There is NO WARRANTY, to the extent permitted by law.
+
+   Written by Paul Eggert."
+
+   usage="Usage: $0 [OPTION]... [FILE]...
+   Uncompress FILEs to standard output.
+
+   -f, --force       force; read compressed data even from a terminal
+   -l, --list        list compressed file contents
+   -q, --quiet       suppress all warnings
+   -r, --recursive   operate recursively on directories
+   -S, --suffix=SUF  use suffix SUF on compressed files
+         --synchronous synchronous output (safer if system crashes, but slower)
+   -t, --test        test compressed file integrity
+   -v, --verbose     verbose mode
+         --help        display this help and exit
+         --version     display version information and exit
+
+   With no FILE, or when FILE is -, read standard input.
+
+   Report bugs to <bug-gzip@gnu.org>."
+
+   case $1 in
+   --help)    printf '%s\n' "$usage"   || exit 1; exit;;
+   --version) printf '%s\n' "$version" || exit 1; exit;;
+   esac
+
+   exec gzip -cd "$@"
+   ```
+
+   /sbin:
+   ```bash
+   galihcandra@LAPTOP-QQ597UPT:~$ cd /sbin
+   galihcandra@LAPTOP-QQ597UPT:/sbin$ pwd
+   /sbin
+   galihcandra@LAPTOP-QQ597UPT:/sbin$ ls -al | more
+   total 14340
+   drwxr-xr-x  2 root root     12288 Mar  4 11:18 .
+   drwxr-xr-x 12 root root      4096 Aug  5  2025 ..
+   -rwxr-xr-x  1 root root     39680 Aug 15  2025 aa-load
+   -rwxr-xr-x  1 root root      3225 Aug 15  2025 aa-remove-unknown
+   -rwxr-xr-x  1 root root     40000 Aug 15  2025 aa-status
+   -rwxr-xr-x  1 root root       137 Apr 12  2024 aa-teardown
+   -rwxr-xr-x  1 root root     14904 Apr  8  2024 accessdb
+   -rwxr-xr-x  1 root root      1053 Mar 31  2024 add-shell
+   -rwxr-xr-x  1 root root      3075 Jan  6 05:01 addgnupghome
+   lrwxrwxrwx  1 root root         7 Jul  6  2023 addgroup -> addus
+   er
+   -rwxr-xr-x  1 root root     55191 Jul  6  2023 adduser
+   -rwxr-xr-x  1 root root     60992 Sep 16 07:08 agetty
+   -rwxr-xr-x  1 root root   1629848 Aug 15  2025 apparmor_parser
+   lrwxrwxrwx  1 root root         9 Aug 15  2025 apparmor_status -
+   > aa-status
+   -rwxr-xr-x  1 root root      2217 Jan  6 05:01 applygnupgdefault
+   s
+   -rwxr-xr-x  1 root root     63088 May 28  2025 arp
+   -rwxr-xr-x  1 root root     26960 Jul 10  2025 arpd
+   -rwxr-xr-x  1 root root     35144 Apr 29  2024 badblocks
+   -rwxr-xr-x  1 root root     27856 Oct 15  2024 biosdecode
+   -rwxr-xr-x  1 root root     16351 Nov 28  2024 blkdeactivate
+   -rwxr-xr-x  1 root root     22912 Sep 16 07:08 blkdiscard
+   -rwxr-xr-x  1 root root     55720 Sep 16 07:08 blkid
+   -rwxr-xr-x  1 root root     35200 Sep 16 07:08 blkzone
+   -rwxr-xr-x  1 root root     35200 Sep 16 07:08 blockdev
+   -rwxr-xr-x  1 root root    111096 Jul 10  2025 bridge
+   -rwxr-xr-x  1 root root     58456 Feb 20  2025 capsh
+   -rwxr-xr-x  1 root root     97008 Sep 16 07:08 cfdisk
+   galihcandra@LAPTOP-QQ597UPT:/sbin$ cat ldconfig
+   #!/bin/sh
+
+   if  test $# = 0                            \
+      && test x"$LDCONFIG_NOTRIGGER" = x        \
+   && test x"$DPKG_MAINTSCRIPT_PACKAGE" != x    \
+   && dpkg-trigger --check-supported 2>/dev/null
+   then
+         if dpkg-trigger --no-await ldconfig; then
+            if test x"$LDCONFIG_TRIGGER_DEBUG" != x; then
+               echo "ldconfig: wrapper deferring update (trigger activated)"
+            fi
+            exit 0
+         fi
+   fi
+
+   exec /sbin/ldconfig.real "$@"
+   ```
+
+   /tmp:
+   ```bash
+   galihcandra@LAPTOP-QQ597UPT:~$ cd /tmp
+   galihcandra@LAPTOP-QQ597UPT:/tmp$ pwd
+   /tmp
+   galihcandra@LAPTOP-QQ597UPT:/tmp$ ls -al | more
+   total 24
+   drwxrwxrwt  7 root root 4096 Mar  4 16:04 .
+   drwxr-xr-x 32 root root 4096 Mar  4 15:18 ..
+   drwxrwxrwx  2 root root   40 Mar  4 15:19 .X11-unix
+   drwx------  2 root root 4096 Mar  4 15:19 snap-private-tmp
+   drwx------  3 root root 4096 Mar  4 15:19 systemd-private-61a6ab
+   bd1a95419f88be9212e6eb2298-systemd-logind.service-DKq7o8
+   drwx------  3 root root 4096 Mar  4 15:19 systemd-private-61a6ab
+   bd1a95419f88be9212e6eb2298-systemd-resolved.service-WYLEp3
+   drwx------  3 root root 4096 Mar  4 15:19 systemd-private-61a6ab
+   bd1a95419f88be9212e6eb2298-systemd-timesyncd.service-00TZgX
+   galihcandra@LAPTOP-QQ597UPT:/tmp$ cat snap-private-tmp
+   cat: snap-private-tmp: Permission denied   
+   ```
+
+   /boot:
+   ```bash
+   galihcandra@LAPTOP-QQ597UPT:~$ cd /boot
+   galihcandra@LAPTOP-QQ597UPT:/boot$ pwd
+   /boot
+   galihcandra@LAPTOP-QQ597UPT:/boot$ ls -al | more
+   total 8
+   drwxr-xr-x  2 root root 4096 Apr 22  2024 .
+   drwxr-xr-x 32 root root 4096 Mar  4 15:18 ..
+   galihcandra@LAPTOP-QQ597UPT:/boot$ ls
+   galihcandra@LAPTOP-QQ597UPT:/boot$ cat .
+   cat: .: Is a directory
+   ```
