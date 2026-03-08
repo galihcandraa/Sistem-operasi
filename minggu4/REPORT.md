@@ -748,3 +748,88 @@ Telusuri direktory /bin, /usr/bin, /sbin, /tmp dan /boot.
    galihcandra@LAPTOP-QQ597UPT:/proc$ cat uptime
    2089.96 3315.88
    ```
+   
+5. Ubahlah direktory home ke user lain secara langsung menggunakan cd ~username.
+   ```bash
+   galihcandra@LAPTOP-QQ597UPT:~$ cd ~man
+   galihcandra@LAPTOP-QQ597UPT:/var/cache/man$
+   ```
+
+6. Ubah kembali ke direktory home Anda.
+   ```bash
+   galihcandra@LAPTOP-QQ597UPT:/var/cache/man$ cd ~
+   galihcandra@LAPTOP-QQ597UPT:~$ pwd
+   /home/galihcandra
+   ```
+
+7. Buat subdirektory work dan play.
+   ```bash
+   galihcandra@LAPTOP-QQ597UPT:~$ mkdir work play
+   ```
+
+8. Hapus subdirektory work.
+   ```bash
+   galihcandra@LAPTOP-QQ597UPT:~$ rmdir work
+   ```
+
+9.  Copy file /etc/passwd ke direktory home Anda.
+      ```
+      galihcandra@LAPTOP-QQ597UPT:~$ cp /etc/passwd passwd
+      ```
+
+10. Pindahkan ke subdirektory play.
+    ```bash
+    galihcandra@LAPTOP-QQ597UPT:~$ mv passwd play
+    ```
+
+11. Ubahlah ke subdirektory play dan buat symbolic link dengan nama terminal yang menunjuk ke perangkat tty. Apa yang terjadi jika melakukan hard link ke perangkat 
+tty ?
+
+      Jawaban:
+
+      Ketika mencoba membuat hard link ke perangkat tty, sistem menolak karena tty merupakan device file, dan hard link tidak diperbolehkan untuk perangkat tersebut.
+
+      ```bash
+      galihcandra@LAPTOP-QQ597UPT:~$ cd play
+      galihcandra@LAPTOP-QQ597UPT:~/play$ ln -s /dev/tty terminal
+      galihcandra@LAPTOP-QQ597UPT:~/play$ ls -1
+      passwd
+      terminal
+      ```
+
+12.  Buatlah file bernama hello.txt yang berisi kata ”hello word”. Dapatkah Anda gunakan ”cp” menggunakan ”terminal” sebagai file asal untuk menghasilkan efek 
+yang sama ?
+
+      Jawaban:
+
+      bisa menghasilkan efek yang sama, tetapi harus mengetik teks secara manual dan mengakhiri input dengan Ctrl + D.
+
+      ```bash
+      galihcandra@LAPTOP-QQ597UPT:~/play$ echo "halo word" > hello.txt
+      galihcandra@LAPTOP-QQ597UPT:~/play$ cat hello.txt
+      halo word
+      galihcandra@LAPTOP-QQ597UPT:~/play$ cp terminal hello.txt
+      hello word!
+      galihcandra@LAPTOP-QQ597UPT:~/play$ cat hello.txt
+      hello word!
+      ```
+13.  Copy hello.txt ke terminal. Apa yang terjadi ?
+   
+      Jawaban: 
+
+      Ketika file hello.txt dicopy ke terminal, isi file akan ditampilkan pada layar karena terminal merupakan symbolic link dari /dev/tty yang merepresentasikan terminal aktif.
+
+      ```bash
+      galihcandra@LAPTOP-QQ597UPT:~/play$ cp hello.txt terminal
+      hello word!
+      ```
+
+14. Masih direktory home, copy keseluruhan direktory play ke direktory bernama work menggunakan symbolic link.
+      ```bash
+      galihcandra@LAPTOP-QQ597UPT:~$ ln -s play work
+      ```
+
+15. Hapus direktory work dan isinya dengan satu perintah.
+      ```bash
+      galihcandra@LAPTOP-QQ597UPT:~$ rm -r work
+      ```
