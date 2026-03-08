@@ -523,3 +523,228 @@ Telusuri direktory /bin, /usr/bin, /sbin, /tmp dan /boot.
    galihcandra@LAPTOP-QQ597UPT:/dev$ ls -l /dev/pts/5
    crw--w---- 1 galihcandra tty 136, 5 Mar  8 10:55 /dev/pts/5
    ```
+
+4. Telusuri directory /proc. Tampilkan isi file interrupts, devices,cpuinfo, meminfo dan uptime menggunakan perintah cat. Dapatkah Anda melihat mengapa directory /proc disebut pseudo -filesystem yang memungkinkan akses ke struktur data kernel ? 
+
+   Jawaban:
+
+   Direktori /proc disebut pseudo filesystem karena:
+   1. File di dalamnya tidak benar-benar tersimpan di disk.
+   2. Isinya dibuat secara dinamis oleh kernel saat diakses.
+   3. Digunakan untuk melihat dan mengakses informasi internal kernel dan proses.
+   4. Berfungsi sebagai interface antara kernel dan user space.
+   
+   ```bash
+   galihcandra@LAPTOP-QQ597UPT:/$ cd /proc
+   galihcandra@LAPTOP-QQ597UPT:/proc$ ls
+   1     164   2    379  800        devices        iomem        kpageflags     net           swaps          vmstat
+   104   165   215  515  acpi       diskstats      ioports      latency_stats  pagetypeinfo  sys            zoneinfo
+   1252  1855  217  528  buddyinfo  dma            irq          loadavg        partitions    sysrq-trigger
+   1253  1878  222  557  bus        driver         kallsyms     locks          pressure      sysvipc
+   1254  193   234  56   cgroups    dynamic_debug  kcore        meminfo        schedstat     thread-self
+   1261  194   238  574  cmdline    execdomains    key-users    misc           scsi          timer_list
+   1262  195   241  622  config.gz  fb             keys         modules        self          tty
+   1263  196   259  7    consoles   filesystems    kmsg         mounts         slabinfo      uptime
+   127   197   337  798  cpuinfo    fs             kpagecgroup  mpt            softirqs      version
+   1567  198   341  799  crypto     interrupts     kpagecount   mtrr           stat          vmallocinfo
+   galihcandra@LAPTOP-QQ597UPT:/proc$ cat interrupts
+            CPU0       CPU1
+   8:          0          0   IO-APIC   8-edge      rtc0
+   9:          1          0   IO-APIC   9-fasteoi   acpi
+   24:          0          1  Hyper-V PCIe MSI 2938026065920-edge      virtio0-config
+   25:       1146          0  Hyper-V PCIe MSI 2938026065921-edge      virtio0-virtqueues
+   26:          1          0  Hyper-V PCIe MSI 6801751801856-edge      virtio1-config
+   27:          0          1  Hyper-V PCIe MSI 6801751801857-edge      virtio1-hiprio
+   28:         10          0  Hyper-V PCIe MSI 6801751801858-edge      virtio1-requests.0
+   NMI:          0          0   Non-maskable interrupts
+   LOC:          0          0   Local timer interrupts
+   SPU:          0          0   Spurious interrupts
+   PMI:          0          0   Performance monitoring interrupts
+   IWI:          0          0   IRQ work interrupts
+   RTR:          0          0   APIC ICR read retries
+   RES:       1339       1369   Rescheduling interrupts
+   CAL:      29816      38207   Function call interrupts
+   TLB:          0          0   TLB shootdowns
+   TRM:          0          0   Thermal event interrupts
+   THR:          0          0   Threshold APIC interrupts
+   DFR:          0          0   Deferred Error APIC interrupts
+   MCE:          0          0   Machine check exceptions
+   MCP:          7          7   Machine check polls
+   HYP:      26775       2010   Hypervisor callback interrupts
+   HRE:          0          0   Hyper-V reenlightenment interrupts
+   HVS:     106482     101490   Hyper-V stimer0 interrupts
+   ERR:          0
+   MIS:          0
+   PIN:          0          0   Posted-interrupt notification event
+   NPI:          0          0   Nested posted-interrupt event
+   PIW:          0          0   Posted-interrupt wakeup event
+   galihcandra@LAPTOP-QQ597UPT:/proc$ cat devices
+   Character devices:
+   1 mem
+   4 /dev/vc/0
+   4 tty
+   4 ttyS
+   5 /dev/tty
+   5 /dev/console
+   5 /dev/ptmx
+   7 vcs
+   10 misc
+   13 input
+   21 sg
+   29 fb
+   108 ppp
+   128 ptm
+   136 pts
+   226 drm
+   229 hvc
+   241 intel_mid_scu
+   242 nvme-generic
+   243 nvme
+   244 virtio-portsdev
+   245 bsg
+   246 watchdog
+   247 ptp
+   248 pps
+   249 rtc
+   250 dax
+   251 dimmctl
+   252 ndctl
+   253 tpm
+   254 gpiochip
+
+   Block devices:
+   1 ramdisk
+   7 loop
+   8 sd
+   11 sr
+   65 sd
+   66 sd
+   67 sd
+   68 sd
+   69 sd
+   70 sd
+   71 sd
+   128 sd
+   129 sd
+   130 sd
+   131 sd
+   132 sd
+   133 sd
+   134 sd
+   135 sd
+   254 device-mapper
+   259 blkext
+   galihcandra@LAPTOP-QQ597UPT:/proc$ cat cpuinfo
+   processor       : 0
+   vendor_id       : GenuineIntel
+   cpu family      : 6
+   model           : 122
+   model name      : Intel(R) Celeron(R) N4020 CPU @ 1.10GHz
+   stepping        : 8
+   microcode       : 0xffffffff
+   cpu MHz         : 1094.399
+   cache size      : 4096 KB
+   physical id     : 0
+   siblings        : 2
+   core id         : 0
+   cpu cores       : 2
+   apicid          : 0
+   initial apicid  : 0
+   fpu             : yes
+   fpu_exception   : yes
+   cpuid level     : 24
+   wp              : yes
+   flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid tsc_known_freq pni pclmulqdq vmx ssse3 cx16 pdcm sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave rdrand hypervisor lahf_lm 3dnowprefetch ssbd ibrs ibpb stibp ibrs_enhanced tpr_shadow ept vpid ept_ad fsgsbase tsc_adjust smep erms rdseed smap clflushopt sha_ni xsaveopt xsavec xgetbv1 xsaves vnmi umip rdpid md_clear arch_capabilities
+   vmx flags       : vnmi invvpid ept_x_only ept_ad ept_1gb tsc_offset vtpr ept vpid unrestricted_guest ept_mode_based_exec tsc_scaling
+   bugs            : spectre_v1 spectre_v2 spec_store_bypass retbleed rfds bhi
+   bogomips        : 2188.79
+   clflush size    : 64
+   cache_alignment : 64
+   address sizes   : 39 bits physical, 48 bits virtual
+   power management:
+
+   processor       : 1
+   vendor_id       : GenuineIntel
+   cpu family      : 6
+   model           : 122
+   model name      : Intel(R) Celeron(R) N4020 CPU @ 1.10GHz
+   stepping        : 8
+   microcode       : 0xffffffff
+   cpu MHz         : 1094.399
+   cache size      : 4096 KB
+   physical id     : 0
+   siblings        : 2
+   core id         : 1
+   cpu cores       : 2
+   apicid          : 1
+   initial apicid  : 1
+   fpu             : yes
+   fpu_exception   : yes
+   cpuid level     : 24
+   wp              : yes
+   flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid tsc_known_freq pni pclmulqdq vmx ssse3 cx16 pdcm sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave rdrand hypervisor lahf_lm 3dnowprefetch ssbd ibrs ibpb stibp ibrs_enhanced tpr_shadow ept vpid ept_ad fsgsbase tsc_adjust smep erms rdseed smap clflushopt sha_ni xsaveopt xsavec xgetbv1 xsaves vnmi umip rdpid md_clear arch_capabilities
+   vmx flags       : vnmi invvpid ept_x_only ept_ad ept_1gb tsc_offset vtpr ept vpid unrestricted_guest ept_mode_based_exec tsc_scaling
+   bugs            : spectre_v1 spectre_v2 spec_store_bypass retbleed rfds bhi
+   bogomips        : 2188.79
+   clflush size    : 64
+   cache_alignment : 64
+   address sizes   : 39 bits physical, 48 bits virtual
+   power management:
+
+   galihcandra@LAPTOP-QQ597UPT:/proc$ cat meminfo
+   MemTotal:        1858304 kB
+   MemFree:          652740 kB
+   MemAvailable:    1182164 kB
+   Buffers:           10068 kB
+   Cached:           571132 kB
+   SwapCached:            0 kB
+   Active:           132592 kB
+   Inactive:         791176 kB
+   Active(anon):       2700 kB
+   Inactive(anon):   343344 kB
+   Active(file):     129892 kB
+   Inactive(file):   447832 kB
+   Unevictable:           0 kB
+   Mlocked:               0 kB
+   SwapTotal:       1048576 kB
+   SwapFree:        1048576 kB
+   Dirty:                16 kB
+   Writeback:             0 kB
+   AnonPages:        342580 kB
+   Mapped:           137232 kB
+   Shmem:              3468 kB
+   KReclaimable:      27560 kB
+   Slab:              62668 kB
+   SReclaimable:      27560 kB
+   SUnreclaim:        35108 kB
+   KernelStack:        3792 kB
+   PageTables:        10216 kB
+   SecPageTables:         0 kB
+   NFS_Unstable:          0 kB
+   Bounce:                0 kB
+   WritebackTmp:          0 kB
+   CommitLimit:     1977728 kB
+   Committed_AS:    1010672 kB
+   VmallocTotal:   34359738367 kB
+   VmallocUsed:       29120 kB
+   VmallocChunk:          0 kB
+   Percpu:              840 kB
+   HardwareCorrupted:     0 kB
+   AnonHugePages:         0 kB
+   ShmemHugePages:        0 kB
+   ShmemPmdMapped:        0 kB
+   FileHugePages:         0 kB
+   FilePmdMapped:         0 kB
+   Unaccepted:            0 kB
+   HugePages_Total:       0
+   HugePages_Free:        0
+   HugePages_Rsvd:        0
+   HugePages_Surp:        0
+   Hugepagesize:       2048 kB
+   Hugetlb:               0 kB
+   DirectMap4k:       62464 kB
+   DirectMap2M:     1941504 kB
+   DirectMap1G:     8388608 kB
+   galihcandra@LAPTOP-QQ597UPT:/proc$ cat uptime
+   2089.96 3315.88
+   ```
