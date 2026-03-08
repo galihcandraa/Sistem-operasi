@@ -748,7 +748,7 @@ Telusuri direktory /bin, /usr/bin, /sbin, /tmp dan /boot.
    galihcandra@LAPTOP-QQ597UPT:/proc$ cat uptime
    2089.96 3315.88
    ```
-   
+
 5. Ubahlah direktory home ke user lain secara langsung menggunakan cd ~username.
    ```bash
    galihcandra@LAPTOP-QQ597UPT:~$ cd ~man
@@ -833,3 +833,37 @@ yang sama ?
       ```bash
       galihcandra@LAPTOP-QQ597UPT:~$ rm -r work
       ```
+## LAPORAN RESMI:
+1. Analisa hasil percobaan yang Anda lakukan.
+   
+   * Analisa setiap hasil tampilannya.
+         
+   * Pada Percobaan 1 point 3 buatlah pohon dari struktur file dan direktori
+      ```bash
+      HOME
+      |
+      |__A
+      |  |___D
+      |  |    |___A
+      |  | __E
+      |
+      |__B
+      |  |___F
+      |
+      |__C
+      ```
+
+   * Bila terdapat pesan error, jelaskan penyebabnya.
+  
+         1. Error pada perintah rmdir B.
+         Pesan error muncul karena direktori B masih berisi subdirektori F.
+         Perintah rmdir hanya dapat digunakan untuk menghapus direktori yang kosong.
+
+         2. Error saat menjalankan ls -l B setelah direktori dihapus.
+         Pesan error muncul karena direktori B sudah dihapus sebelumnya sehingga sistem tidak dapat menemukan direktori tersebut.
+
+2. Kerjakan latihan diatas dan analisa hasil tampilannya.
+   
+3. Berikan kesimpulan dari praktikum ini.
+   
+   Berdasarkan praktikum yang telah dilakukan, dapat disimpulkan bahwa sistem operasi Linux memiliki berbagai perintah yang digunakan untuk mengelola file dan direktori. Pada praktikum ini mempelajari cara menavigasi direktori menggunakan perintah seperti cd, pwd, dan ls, serta membuat, menyalin, memindahkan, dan menghapus file atau direktori menggunakan mkdir, cp, mv, dan rm. Selain itu juga dapat mengetahui bahwa Linux memperlakukan perangkat sebagai file yang dapat diakses melalui direktori seperti /dev, serta informasi sistem dapat dilihat melalui direktori /proc. Dengan praktikum ini, pengguna dapat memahami struktur sistem file Linux dan penggunaan perintah dasar dalam pengelolaan file dan direktori.
