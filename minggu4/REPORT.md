@@ -214,6 +214,8 @@ format yang digunakan)
 2. Lanjutkan penelusuran pohon pada sistem file menggunakan cd, ls, pwd dan cat. 
 Telusuri direktory /bin, /usr/bin, /sbin, /tmp dan /boot.
 
+   output
+
    /bin:
    ```bash
    galihcandra@LAPTOP-QQ597UPT:/$ cd /bin
@@ -488,4 +490,36 @@ Telusuri direktory /bin, /usr/bin, /sbin, /tmp dan /boot.
    galihcandra@LAPTOP-QQ597UPT:/boot$ ls
    galihcandra@LAPTOP-QQ597UPT:/boot$ cat .
    cat: .: Is a directory
+   ```
+3. Telusuri direktory /dev. Identifikasi perangkat yang tersedia. Identifikasi tty (termninal) Anda (ketik who am i); siapa pemilih tty Anda (gunakan ls –l).
+
+   output
+   ```bash
+   galihcandra@LAPTOP-QQ597UPT:/$ cd /dev
+   galihcandra@LAPTOP-QQ597UPT:/dev$ ls 
+   autofs           hvc2          loop6       ram11   sdc       tty13  tty3   tty46  tty62        vcs2   vcsu6
+   block            hvc3          loop7       ram12   sdd       tty14  tty30  tty47  tty63        vcs3   vfio
+   bsg              hvc4          mapper      ram13   sg0       tty15  tty31  tty48  tty7         vcs4   vga_arbiter
+   btrfs-control    hvc5          mcelog      ram14   sg1       tty16  tty32  tty49  tty8         vcs5   vhost-net
+   char             hvc6          mem         ram15   sg2       tty17  tty33  tty5   tty9         vcs6   vhost-vsock
+   console          hvc7          mptctl      ram2    sg3       tty18  tty34  tty50  ttyS0        vcsa   virtio-ports
+   core             hwrng         mqueue      ram3    shm       tty19  tty35  tty51  ttyS1        vcsa1  vport0p0
+   cpu_dma_latency  initctl       net         ram4    snapshot  tty2   tty36  tty52  ttyS2        vcsa2  vport0p1
+   cuse             kmsg          null        ram5    snd       tty20  tty37  tty53  ttyS3        vcsa3  vport0p2
+   disk             kvm           nvram       ram6    stderr    tty21  tty38  tty54  ttyS4        vcsa4  vsock
+   dxg              log           ppp         ram7    stdin     tty22  tty39  tty55  ttyS5        vcsa5  zero
+   fd               loop-control  ptmx        ram8    stdout    tty23  tty4   tty56  ttyS6        vcsa6
+   full             loop0         ptp0        ram9    tty       tty24  tty40  tty57  ttyS7        vcsu
+   fuse             loop1         ptp_hyperv  random  tty0      tty25  tty41  tty58  uinput       vcsu1
+   hpet             loop2         pts         rtc     tty1      tty26  tty42  tty59  urandom      vcsu2
+   hugepages        loop3         ram0        rtc0    tty10     tty27  tty43  tty6   userfaultfd  vcsu3
+   hvc0             loop4         ram1        sda     tty11     tty28  tty44  tty60  vcs          vcsu4
+   hvc1             loop5         ram10       sdb     tty12     tty29  tty45  tty61  vcs1         vcsu5
+   galihcandra@LAPTOP-QQ597UPT:/dev$ who am i
+   galihcandra@LAPTOP-QQ597UPT:/dev$ whoami
+   galihcandra
+   galihcandra@LAPTOP-QQ597UPT:/dev$ tty
+   /dev/pts/5
+   galihcandra@LAPTOP-QQ597UPT:/dev$ ls -l /dev/pts/5
+   crw--w---- 1 galihcandra tty 136, 5 Mar  8 10:55 /dev/pts/5
    ```
