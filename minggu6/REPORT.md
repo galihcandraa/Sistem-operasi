@@ -30,7 +30,7 @@ Jawaban:
 ### Latihan 6.2
 1. Jalankan sleep 120 & dan amati kolom STAT pada ps aux. Kondisi
 apa yang ditampilkan? Mengapa proses sleep berada di kondisi tersebut?
-2. Jalankan beberapa perintah yang berhasil dan yang gagal, lalu catat exit
+1. Jalankan beberapa perintah yang berhasil dan yang gagal, lalu catat exit
 code masing-masing. Pola apa yang Anda temukan?
 
 ![](img/Latihan-6.2.jpg)
@@ -39,3 +39,19 @@ Jawaban:
 1. Kondisi yang ditampilkan pada kolom STAT adalah S (sleeping).
 Hal ini karena proses sleep sedang menunggu waktu (delay) tanpa melakukan aktivitas CPU, sehingga berada dalam kondisi tidur
 2. Pola yang saya temukan adalah kode 0 jika berhasil, dan kode selain 0 jika tidak berhasil.
+
+## Praktikum 6.3 — Mengatur Prioritas Proses
+![](img/Praktikum-6.3.1.jpg)
+
+### Latihan 6.3
+1. Jalankan nice -n 5 sleep 200 & dan verifikasi nilai NI-nya dengan
+ps.
+2. Ubah nilai nice menjadi 10 menggunakan renice, lalu verifikasi kembali.
+3. Coba ubah nilai nice menjadi -5 tanpa sudo. Apa yang terjadi? Mengapa Linux membatasi hal ini untuk user biasa?
+
+![](img/Latihan-6.3.jpg)
+
+Jawaban:
+1. Sudah tercantum pada gambar di atas.
+2. Sudah tercantum pada gambar di atas.
+3. Yang terjadi adalah permission failed karena user biasa di larang menaikkan prioritas demi kestablian sistem.
