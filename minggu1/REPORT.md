@@ -2,7 +2,7 @@
 Pengenalan Sistem Operasi & Instalasi
 
 * Nama: Galih Candra Kirana
-* NIM: 254107020078
+* NIM: 254107020080
 * Kelas: TI-1G
 
 ## 1.10. Latihan

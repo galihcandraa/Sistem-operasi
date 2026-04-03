@@ -2,7 +2,7 @@
 Manajemen Perangkat Keras & Perintah Dasar Sistem Operasi
 
 * Nama: Galih Candra Kirana
-* NIM: 254107020078
+* NIM: 254107020080
 * Kelas: TI-1G
 
 ## Praktikum 2.1: Identifikasi CPU dan Memori
