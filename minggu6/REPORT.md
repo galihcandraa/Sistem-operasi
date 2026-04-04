@@ -110,6 +110,53 @@ Jawaban:
 /home/galihcandra/.vscode-server/...
 ```
 (dengan penggunaan sekitar 11.5% memori, PID 18474)
-2. Tampilan berubah menjadi menampilkan penggunaan CPU per core (inti), bukan total CPU saja.
+1. Tampilan berubah menjadi menampilkan penggunaan CPU per core (inti), bukan total CPU saja.
 Hal ini berguna untuk melihat beban tiap core, sehingga bisa diketahui apakah ada core yang bekerja lebih berat dibanding yang lain.
-3. Sudah terlampir di gambar tetapi bukan proses sshd karena tidak ada.
+1. Sudah terlampir di gambar tetapi bukan proses sshd karena tidak ada.
+
+## Latihan
+### Latihan 6.A
+Eksplorasi Proses Sistem
+1. Jalankan ps aux –forest dan temukan proses dengan PID 1. Apa
+nama dan fungsi proses tersebut dalam sistem Linux modern?
+2. Hitung berapa proses yang dimiliki oleh user root dan berapa yang
+dimiliki oleh user Anda. Mengapa root memiliki lebih banyak proses?
+3. Temukan semua proses yang berada dalam kondisi S. Mengapa sebagian
+besar proses di sistem berada dalam kondisi ini?
+
+![](img/Latihan-6.a.jpg)
+
+Jawaban:
+1. Nama proses dengan PID 1 pada sistem saya adalah /sbin/init. Proses ini berfungsi sebagai init system yang bertanggung jawab menginisialisasi sistem dan menjalankan proses lainnya. Namun, karena sistem berjalan di lingkungan WSL, init yang digunakan bukan systemd penuh, melainkan versi yang disesuaikan untuk integrasi dengan Windows.
+2. Proses yang dimiliki oleh user root adalah 19, sedangkat user saya tidak ada(0). User root eenjalankan banyak proses karena root menjalankan service sistem, sedangkan user saya hanya menjalankan aktivitas user biasa. 
+3. Sudah terlampir di gambar. Sebagian proses sistem dalam kondisi S karena sistem linux sedang tidak digunakan, contoh seperti terminal yang menunggu input.
+
+### Latihan 6.B
+Simulasi Manajemen Job
+1. Jalankan tiga perintah sleep dengan durasi 100, 200, dan 300 detik di background. Verifikasi ketiganya dengan jobs.
+2. Bawa job kedua ke foreground, jeda dengan Ctrl+Z , lalu kembalikan
+ke background dengan bg.
+3. Hentikan job pertama dengan kill %1. Tampilkan kembali daftar job.
+Berapa job yang tersisa?
+
+![](img/Latihan-6.b.jpg)
+
+Jawaban: 
+1. Terlampir di gambar.
+2. Terlampir di gambar.
+3. Job yang tersisa adalah 2 proses yang sedang berjalan.
+
+### Latihan 6.C
+Prioritas dan Sinyal
+1. Jalankan dua proses sleep: satu dengan nice +5 dan satu dengan nice
++15. Verifikasi nilai NI keduanya dengan ps.
+2. Gunakan renice untuk mengubah nice proses pertama menjadi +10.
+Proses mana yang kini lebih diprioritaskan scheduler?
+3. Kirim SIGSTOP ke salah satu proses, verifikasi kondisi T-nya, lalu kirim SIGCONT. Akhiri semua proses percobaan dengan pkill sleep.
+
+![](img/Latihan-6.c.jpg)
+
+Jawaban:
+1. Terlampir di gambar.
+2. Proses yang lebih diprioritaskan adalah proses dengan nice 10 karena lebih kecil dari proses nice 15.
+3. Terlampir di gambar.
