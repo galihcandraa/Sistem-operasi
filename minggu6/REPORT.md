@@ -72,3 +72,21 @@ Jawaban:
 1. Kondisi STAT yang awalnya adalah S berubah menjadi T (Stopped) setelah mengirim SIGSTOP.
 2. Kondisi STATnya balik lagi ke S (terlampir di gambar).
 3. Memilih SIGKILL jika proses tidak merespon SIGTERM.
+
+## Praktikum 6.5 — Manajemen Job Foreground dan Background
+![](img/Praktikum-6.5.1.jpg)
+
+### Latihan 6.5
+1. Jalankan top di foreground. Apa yang terjadi di terminal?
+2. Tekan Ctrl+Z dan cek statusnya dengan jobs. Kondisi apa yang
+ditampilkan?
+3. Pindahkan ke background dengan bg. Apakah top dapat berjalan dengan
+baik di background? Mengapa? Kembalikan ke foreground dengan fg, lalu keluar dengan q
+   
+![](img/Latihan-6.5.jpg)
+
+Jawaban:
+1. Yang terjadi adalah terminal menampilkan monitoring proses secara real time.
+2. Kondisi proses top terjeda karena CTRL+Z.
+3. op tidak berjalan dengan baik di bg karena membutuhkan interaksi langsung dengan terminal (foreground) untuk menampilkan output secara real-time.
+   
