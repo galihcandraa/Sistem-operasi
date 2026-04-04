@@ -80,7 +80,7 @@ Jawaban:
 1. Jalankan top di foreground. Apa yang terjadi di terminal?
 2. Tekan Ctrl+Z dan cek statusnya dengan jobs. Kondisi apa yang
 ditampilkan?
-3. Pindahkan ke background dengan bg. Apakah top dapat berjalan dengan
+1. Pindahkan ke background dengan bg. Apakah top dapat berjalan dengan
 baik di background? Mengapa? Kembalikan ke foreground dengan fg, lalu keluar dengan q
    
 ![](img/Latihan-6.5.jpg)
@@ -90,3 +90,26 @@ Jawaban:
 2. Kondisi proses top terjeda karena CTRL+Z.
 3. op tidak berjalan dengan baik di bg karena membutuhkan interaksi langsung dengan terminal (foreground) untuk menampilkan output secara real-time.
    
+## Praktikum 6.6 — Pemantauan Proses
+![](img/Praktikum-6.6.1.jpg)
+![](img/Praktikum-6.6.2.jpg)
+
+### Latihan 6.6
+1. Gunakan ps aux –sort=%mem untuk menemukan proses yang menggunakan memori paling banyak di VM Anda. Proses apa itu?
+2. Di dalam top, tekan 1 . Apa yang berubah pada tampilan? Mengapa
+informasi ini berguna?
+3. Di dalam htop, navigasikan ke proses sshd menggunakan tombol panah.
+Tekan F9 dan amati opsi sinyal yang tersedia.
+
+![](img/Latihan-6.6.1.jpg)
+![](img/Latihan-6.6.2.jpg)
+
+Jawaban: 
+1. Proses yang menggunakan memori paling besar adalah
+```bash
+/home/galihcandra/.vscode-server/...
+```
+(dengan penggunaan sekitar 11.5% memori, PID 18474)
+2. Tampilan berubah menjadi menampilkan penggunaan CPU per core (inti), bukan total CPU saja.
+Hal ini berguna untuk melihat beban tiap core, sehingga bisa diketahui apakah ada core yang bekerja lebih berat dibanding yang lain.
+3. Sudah terlampir di gambar tetapi bukan proses sshd karena tidak ada.
