@@ -46,8 +46,8 @@ Hal ini karena proses sleep sedang menunggu waktu (delay) tanpa melakukan aktivi
 ### Latihan 6.3
 1. Jalankan nice -n 5 sleep 200 & dan verifikasi nilai NI-nya dengan
 ps.
-2. Ubah nilai nice menjadi 10 menggunakan renice, lalu verifikasi kembali.
-3. Coba ubah nilai nice menjadi -5 tanpa sudo. Apa yang terjadi? Mengapa Linux membatasi hal ini untuk user biasa?
+1. Ubah nilai nice menjadi 10 menggunakan renice, lalu verifikasi kembali.
+2. Coba ubah nilai nice menjadi -5 tanpa sudo. Apa yang terjadi? Mengapa Linux membatasi hal ini untuk user biasa?
 
 ![](img/Latihan-6.3.jpg)
 
@@ -55,3 +55,20 @@ Jawaban:
 1. Sudah tercantum pada gambar di atas.
 2. Sudah tercantum pada gambar di atas.
 3. Yang terjadi adalah permission failed karena user biasa di larang menaikkan prioritas demi kestablian sistem.
+
+## Praktikum 6.4 — Mengirim Sinyal ke Proses
+![](img/Praktikum-6.4.1.jpg)
+
+### Latihan 6.4
+1. Jalankan sleep 400 &, kirim SIGSTOP, dan amati perubahan kolom
+STAT. Kondisi apa yang muncul?
+2. Kirim SIGCONT dan verifikasi proses kembali berjalan.
+3. Hentikan proses dengan SIGTERM lalu verifikasi sudah tidak ada. Kapan
+Anda memilih SIGKILL daripada SIGTERM?
+
+![](img/Latihan-6.4.jpg)
+
+Jawaban:
+1. Kondisi STAT yang awalnya adalah S berubah menjadi T (Stopped) setelah mengirim SIGSTOP.
+2. Kondisi STATnya balik lagi ke S (terlampir di gambar).
+3. Memilih SIGKILL jika proses tidak merespon SIGTERM.
