@@ -39,8 +39,56 @@ echo "================================"
 } | tee "$file"
 ```
 
-
 ## Praktikum 7.2 Script Info Sistem dengan Argumen
+![](img/Praktikum-9.2.1.jpg)
+
+### Latihan 9.2
+Buat script kalkulator.sh yang menerima tiga argumen: <angka1> <operator> <angka2> dengan operator +, -, *, atau /. Contoh:
+./kalkulator.sh 20 + 5 menghasilkan 25. Gunakan case untuk memilih operasi, dan validasi jika argumen tidak lengkap.
+
+![](img/Latihan-9.2.1.jpg)
+
+Script:
+```bash
+#!/bin/bash
+# Penggunaan : ./kalkulator.sh [angka1] [operator] [angka2]
+
+ANGKA1=${1}
+OPERATOR=${2}
+ANGKA2=${3}
+
+# Validasi jumlah argumen
+if [ $# -ne 3 ]; then
+     echo "Usage: $0 <angka1> <operator> <angka2>"
+     echo "Contoh: $0 20 + 5"
+     exit 1
+fi
+
+case $OPERATOR in
+     +)
+        HASIL=$((ANGKA1 + ANGKA2))
+        ;;
+     -)
+        HASIL=$((ANGKA1 - ANGKA2))
+        ;;
+     \*)
+        HASIL=$((ANGKA1 * ANGKA2))
+        ;;
+     /)
+        if [ "$ANGKA2" -eq 0 ]; then
+          echo "Error: pembagian dengan nol tidak diperbolehkan"
+          exit 1
+        fi
+        HASIL=$((ANGKA1 / ANGKA2))
+        ;;
+     *)
+        echo "Operator tidak valid. Gunakan +, -, *, atau /"
+        exit 1
+        ;;
+esac
+
+echo "Hasil: $HASIL"
+```
 
 ## Praktikum 7.3 Script Grading dan Menu Interaktif
 
