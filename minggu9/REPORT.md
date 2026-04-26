@@ -5,7 +5,7 @@ Pemrograman Bash
 * NIM: 254107020080
 * Kelas: TI-1G
 
-## Praktikum 7.1 Script Pertama: Laporan Sistem
+## Praktikum 9.1 Script Pertama: Laporan Sistem
 ![](img/Praktikum-9.1.1.jpg)
 
 ### Latihan 9.1
@@ -39,7 +39,7 @@ echo "================================"
 } | tee "$file"
 ```
 
-## Praktikum 7.2 Script Info Sistem dengan Argumen
+## Praktikum 9.2 Script Info Sistem dengan Argumen
 ![](img/Praktikum-9.2.1.jpg)
 
 ### Latihan 9.2
@@ -90,12 +90,74 @@ esac
 echo "Hasil: $HASIL"
 ```
 
-## Praktikum 7.3 Script Grading dan Menu Interaktif
+## Praktikum 9.3 Script Grading dan Menu Interaktif
+![](img/Praktikum-9.3.1.jpg)
+![](img/Praktikum-9.3.2.jpg)
 
-## Praktikum 7.4 Library Fungsi Validasi
+### Latihan 9.3
+![](img/Latihan-9.3.1.jpg)
 
-##  7.5 Script Backup dengan Opsi
+Script:
+```bash
+#!/bin/bash
+# Script: grading-batch.sh
+# Proses daftar nilai mahasiswa
 
-## Praktikum 7.6 Debugging Script
+MAHASISWA=("Andi:92" "Budi:73" "Citra:55" "Deni:80" "Eka:45")
+
+echo "=== HASIL GRADING ==="
+
+for i in "${!MAHASISWA[@]}"; do
+    ENTRI=${MAHASISWA[$i]}
+
+    NAMA=${ENTRI%%:*}
+    NILAI=${ENTRI##*:}
+
+    if [ "$NILAI" -ge 85 ]; then
+        GRADE="A"
+    elif [ "$NILAI" -ge 75 ]; then
+        GRADE="B"
+    elif [ "$NILAI" -ge 65 ]; then
+        GRADE="C"
+    elif [ "$NILAI" -ge 55 ]; then
+        GRADE="D"
+    else
+        GRADE="E"
+    fi
+
+    MAHASISWA[$i]="$NAMA:$NILAI:$GRADE"
+
+    printf "%-10s %3d %s\n" "$NAMA" "$NILAI" "$GRADE"
+done
+
+echo "===================="
+
+A=0; B=0; C=0; D=0; E=0
+
+for ENTRI in "${MAHASISWA[@]}"; do
+    GRADE=$(echo "$ENTRI" | cut -d: -f3)
+
+    case $GRADE in
+        A) ((A++)) ;;
+        B) ((B++)) ;;
+        C) ((C++)) ;;
+        D) ((D++)) ;;
+        E) ((E++)) ;;
+    esac
+done
+
+echo "===== RINGKASAN ====="
+echo "Jumlah Grade A: $A"
+echo "Jumlah Grade B: $B"
+echo "Jumlah Grade C: $C"
+echo "Jumlah Grade D: $D"
+echo "Jumlah Grade E: $E"
+```
+
+## Praktikum 9.4 Library Fungsi Validasi
+
+## Praktikum 9.5 Script Backup dengan Opsi
+
+## Praktikum 9.6 Debugging Script
 
 ## Tugas Praktikum
