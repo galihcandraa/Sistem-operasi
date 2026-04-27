@@ -155,9 +155,90 @@ echo "Jumlah Grade E: $E"
 ```
 
 ## Praktikum 9.4 Library Fungsi Validasi
+![](img/Praktikum-9.4.1.jpg)
+
+### Latihan 9.4
+![](img/Latihan-9.4.1.jpg)
+Scripts:
+```bash
+lib-validasi.sh
+#!/bin/bash
+
+# lib-validasi.sh
+
+adalah_angka() {
+    [[ "$1" =~ ^[0-9]+$ ]]
+}
+
+file_bisa_dibaca() {
+    [ -f "$1" ] && [ -r "$1" ]
+}
+
+error_exit() {
+    echo "ERROR: $1" >&2
+    exit 1
+}
+
+info() {
+    echo "[INFO] $1"
+}
+
+sukses() {
+    echo "[OK] $1"
+}
+
+konfirmasi() {
+    read -p "$1 (Y/N): " jawab
+
+    case "$jawab" in
+      Y|y) return 0 ;;
+        N|n) return 1 ;;
+        *) echo "Input harus Y atau N"
+           return 1 ;;
+    esac
+}
+```
+
+```bash
+demo-hapus.sh
+#!/bin/bash
+
+source "$(dirname "$0")/lib-validasi.sh"
+
+FILE=$1
+
+[ -z "$FILE" ] && error_exit "Penggunaan: $0 <nama-file>"
+
+if [ ! -f "$FILE" ]; then
+    error_exit "File tidak ditemukan"
+fi
+
+if konfirmasi "Apakah yakin ingin menghapus $FILE?"; then
+    rm "$FILE"
+    sukses "File berhasil dihapus"
+else
+    info "Penghapusan dibatalkan"
+fi
+```
 
 ## Praktikum 9.5 Script Backup dengan Opsi
+![](img/Praktikum-9.5.1.jpg)
+
+### Latihan 9.5
+![](img/Latihan-9.5.1.jpg)
+Scripts:
+```bash
+
+```
 
 ## Praktikum 9.6 Debugging Script
+![](img/Praktikum-9.6.1.jpg)
+
+### Latihan 9.4
+![](img/Latihan-9.6.1.jpg)
+Scripts:
+```bash
+
+```
 
 ## Tugas Praktikum
