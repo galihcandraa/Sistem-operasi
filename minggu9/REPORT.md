@@ -224,12 +224,6 @@ fi
 ## Praktikum 9.5 Script Backup dengan Opsi
 ![](img/Praktikum-9.5.1.jpg)
 
-### Latihan 9.5
-![](img/Latihan-9.5.1.jpg)
-Scripts:
-```bash
-
-```
 
 ## Praktikum 9.6 Debugging Script
 ![](img/Praktikum-9.6.1.jpg)
