@@ -228,11 +228,160 @@ fi
 ## Praktikum 9.6 Debugging Script
 ![](img/Praktikum-9.6.1.jpg)
 
-### Latihan 9.4
+### Latihan 9.6
 ![](img/Latihan-9.6.1.jpg)
 Scripts:
 ```bash
+#!/bin/bash
 
+# Aktifkan tracing internal
+#set -x
+
+error_exit() {
+    echo "ERROR: $1"
+    exit 1
+}
+
+adalah_angka() {
+    [[ "$1" =~ ^[0-9]+$ ]]
+}
+
+[ $# -ne 2 ] && error_exit "Penggunaan: $0 <direktori> <batas-MB>"
+
+DIR=$1
+BATAS=$2
+
+[ ! -d "$DIR" ] && error_exit "Direktori tidak ditemukan"
+
+adalah_angka "$BATAS" || error_exit "Batas harus berupa angka"
+
+UKURAN=$(du -sm "$DIR" | cut -f1)
+
+echo "Direktori : $DIR"
+echo "Ukuran    : ${UKURAN} MB"
+echo "Batas     : ${BATAS} MB"
+
+if [ "$UKURAN" -gt "$BATAS" ]; then
+    echo "PERINGATAN: Melebihi batas"
+    echo "Selisih   : $((UKURAN - BATAS)) MB"
+else
+    echo "Status    : Aman"
+    echo "Sisa      : $((BATAS - UKURAN)) MB"
+fi
 ```
 
 ## Tugas Praktikum
+
+### Tugas 1 Script Absensi Kelas
+![](img/Tugas-Praktikum-9.1.jpg)
+
+Script:
+```bash
+#!/bin/bash
+
+FILE="./logs/absensi-$(date +%F).txt"
+
+bantuan() {
+    echo "Penggunaan:"
+    echo "./absensi.sh <nama> <hadir|izin|alpha>"
+    echo "./absensi.sh -r   (rekap)"
+    echo "./absensi.sh -h   (bantuan)"
+}
+
+rekap() {
+    echo "=== REKAP ABSENSI ==="
+
+    for STATUS in hadir izin alpha
+    do
+        JUMLAH=$(grep -ic " - $STATUS$" "$FILE" 2>/dev/null)
+        echo "$STATUS : $JUMLAH"
+    done
+}
+
+while getopts "rh" OPSI
+do
+    case $OPSI in
+        r) rekap; exit 0 ;;
+        h) bantuan; exit 0 ;;
+        *) bantuan; exit 1 ;;
+    esac
+done
+
+shift $((OPTIND - 1))
+
+NAMA=$1
+STATUS=$2
+
+if [ -z "$NAMA" ] || [ -z "$STATUS" ]; then
+    bantuan
+    exit 1
+fi
+
+case $STATUS in
+    hadir|izin|alpha) ;;
+    *)
+        echo "Status harus hadir/izin/alpha"
+        exit 1
+        ;;
+esac
+
+echo "[$(date +%H:%M)] $NAMA - $STATUS" >> "$FILE"
+
+echo "Data absensi disimpan ke $FILE"
+```
+
+### Tugas 2 Script Health Check Sistem
+![](img/Tugas-Praktikum-9.2.jpg)
+
+Script:
+```bash
+#!/bin/bash
+
+QUIET=false
+BASE_DIR="$(dirname "$0")"
+LOG_DIR="$BASE_DIR/../logs"
+
+bantuan() {
+    echo "Penggunaan:"
+    echo "./scripts/health-check.sh"
+    echo "./scripts/health-check.sh -q"
+    echo "./scripts/health-check.sh -h"
+}
+
+while getopts "qh" OPSI
+do
+    case $OPSI in
+        q) QUIET=true ;;
+        h) bantuan; exit 0 ;;
+        *) bantuan; exit 1 ;;
+    esac
+done
+
+mkdir -p "$LOG_DIR"
+
+FILE="$LOG_DIR/health-$(date +%F_%H%M).txt"
+
+{
+echo "===== HEALTH CHECK ====="
+echo "Waktu      : $(date)"
+echo "Hostname   : $(hostname)"
+echo
+echo "=== UPTIME ==="
+uptime
+echo
+echo "=== DISK ROOT ==="
+df -h /
+echo
+echo "=== MEMORY ==="
+free -h
+echo
+echo "=== TOP 5 CPU PROCESS ==="
+ps -eo pid,comm,%cpu --sort=-%cpu | head -n 6
+} > "$FILE"
+
+if [ "$QUIET" = false ]; then
+    cat "$FILE"
+    echo
+    echo "Laporan disimpan ke $FILE"
+fi
+```
