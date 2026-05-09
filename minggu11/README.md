@@ -225,7 +225,180 @@ other::---
 
 ## 1.3 Manajemen User dan Group
 ## Praktikum 11.3A — Membuat dan Mengelola User
-## Praktikum 11.3B — Group Management   
+```bash
+# buat dua user
+sudo useradd -m -s /bin/bash userA
+sudo useradd -m -s /bin/bash userB
+sudo passwd userA
+sudo passwd userB
+
+# verifikasi
+id userA
+getent passwd userA
+
+# modifikasi shell userA
+sudo usermod -s /bin/zsh userA
+getent passwd userA
+
+# lock dan unlock userB
+sudo usermod -L userB
+sudo passwd -S userB
+sudo usermod -U userB
+sudo passwd -S userB
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ sudo useradd -m -s /bin/bash userA
+useradd: user 'userA' already exists
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ sudo useradd -m -s /bin/bash userB
+useradd: user 'userB' already exists
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ sudo passwd userA
+New password:
+Retype new password:
+passwd: password updated successfully
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ sudo passwd userB
+New password:
+Retype new password:
+passwd: password updated successfully
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ id userA
+uid=1001(userA) gid=1001(userA) groups=1001(userA)
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ getent passwd userA
+userA:x:1001:1001::/home/userA:/bin/sh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ sudo usermod -s /bin/zsh userA
+usermod: Warning: missing or non-executable shell '/bin/zsh'
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ getent passwd userA
+userA:x:1001:1001::/home/userA:/bin/zsh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$  sudo usermod -L userB
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ sudo passwd -S userB
+userB L 2026-05-09 0 99999 7 -1
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ sudo usermod -U userB
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ sudo passwd -S userB
+userB P 2026-05-09 0 99999 7 -1
+```
+
+#### Pertanyaan
+1. Apa perbedaan output id userA sebelum dan sesudah menambah group?
+2. Bagaimana status passwd -S userB berubah saat akun di-lock?
+
+##### Jawaban
+1. Maksud dari soalnya mungkin perbedaan saat menggunakan getent passwd, yang dimana hanya berubah di shell login.
+2. Perubahan status saat di lock(-L) yaitu ada keterangan L (Locked) di samping nama user.
+
+## Praktikum 11.3B — Group Management  
+```bash
+# buat dua group
+sudo groupadd labgroup
+sudo groupadd readonly-group
+
+# tambahkan userA ke kedua group
+sudo usermod -aG labgroup,readonly-group userA
+
+# tambahkan userB hanya ke readonly-group
+sudo usermod -aG readonly-group userB
+
+# verifikasi
+id userA
+id userB
+getent group labgroup
+getent group readonly-group
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ cd ..
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo groupadd labgroup
+[sudo] password for galihcandra:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo groupadd readonly-group
+groupadd: group 'readonly-group' already exists
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo usermod -aG labgroup,readonly-group userA
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo usermod -aG readonly-group userB
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ id userA
+uid=1001(userA) gid=1001(userA) groups=1001(userA),1003(readonly-group),1004(labgroup)
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ id userB
+uid=1002(userB) gid=1002(userB) groups=1002(userB),1003(readonly-group)
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ getent group labgroup
+labgroup:x:1004:userA
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ getent group readonly-group
+readonly-group:x:1003:userA,userB
+```
+
+#### Pertanyaan:
+1. Apa yang ditampilkan id userA vs groups userA?
+2. Mengapa -a pada usermod -aG penting?
+
+##### Jawaban:
+1. Yang ditampilkan userA yaitu informasi lengkap dari user tersebut, sedangkan yang ditampilkan groups userA yaitu hanya menampilkan group yang diikuti oleh userA.
+2. Karena fungsi -a pada command tersebut berfungsi sebagai append agar tidak menimpa group sebelumnya.
+
+## Praktikum 11.3C — Password Aging Policy 
+```bash
+# set aging policy untuk userA
+sudo chage -M 60 -W 7 -m 1 userA
+sudo chage -l userA
+
+# paksa userA ganti password saat login pertama
+sudo chage -d 0 userA
+
+# kunci password userB
+sudo passwd -l userB
+sudo passwd -S userB
+
+# unlock kembali
+sudo passwd -u userB
+sudo passwd -S userB
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo chage -M 60 -W 7 -m 1 userA
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo chage -l userA
+Last password change                                    : May 09, 2026
+Password expires                                        : Jul 08, 2026
+Password inactive                                       : never
+Account expires                                         : never
+Minimum number of days between password change          : 1
+Maximum number of days between password change          : 60
+Number of days of warning before password expires       : 7
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo chage -d 0 userA
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo passwd -l userB
+passwd: password changed.
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo passwd -S userB
+userB L 2026-05-09 0 99999 7 -1
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo passwd -u userB
+passwd: password changed.
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo passwd -S userB
+userB P 2026-05-09 0 99999 7 -1
+```
+
+#### Pertanyaan:
+1. Apa arti nilai yang ditampilkan chage -l userA?
+2. Bagaimana cara membuktikan userB terkunci dari output passwd -S?
+3. Kapan sebaiknya menggunakan chage -d 0 vs passwd -e?
+
+##### Jawaban:
+1. Yang ditampilkan adalah informasi lengkap tentang perubahan password.
+2. Pada outputnya terdapat simbol L di samping nama user.
+3. Ketika ingin memaksa melakukan pergantian password pada login berikutnya.
+
+#### Tantangan
+Buat user bernama intern yang:
+• memiliki shell /bin/bash;
+• menjadi anggota labgroup;
+• dipaksa ganti password pada login pertama;
+• password expired setelah 45 hari dengan warning 7 hari sebelumnya.
+
+##### Jawaban:
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo useradd -m -s /bin/bash intern
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo usermod -aG labgroup intern
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ id intern
+uid=1003(intern) gid=1005(intern) groups=1005(intern),1004(labgroup)
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo chage -d 0 intern
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo chage -M 45 -W 7 intern
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo chage -l intern
+Last password change                                    : password must be changed
+Password expires                                        : password must be changed
+Password inactive                                       : password must be changed
+Account expires                                         : never
+Minimum number of days between password change          : 0
+Maximum number of days between password change          : 45
+Number of days of warning before password expires       : 7
+```
 
 ## 1.4 Konfigurasi sudo dan su
 ## Praktikum 11.4 — Konfigurasi sudo
