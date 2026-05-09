@@ -93,11 +93,134 @@ Jadi, user = 6 (r,w) group = 0 (-) other (-).
     * 755: owner bisa read, write, dan execute. group bisa read, execute. other bisa read, execute.
 3. Permission yang dihasilkan adalah 640 yaitu owner(r,w), group (r) other(-). Bukan 777 karena permission awal yaitu 666 - 027 = 640
 
+#### Tantangan
+Ubah owner atau group salah satu file uji ke akun atau group lain yang tersedia di sistem, kemudian jelaskan
+perubahan output ls -l sebelum dan sesudahnya.
+
+#####
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-permissions$ ls -l secret.txt
+-rw------- 1 galihcandra galihcandra 13 May  8 21:46 secret.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-permissions$ sudo chgrp sudo secret.txt
+[sudo] password for galihcandra:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-permissions$ ls -l secret.txt
+-rw------- 1 galihcandra sudo 13 May  8 21:46 secret.txt
+```
+
 ## 1.2 Access Control Lists (ACLs)
 ## Praktikum 11.2 — ACL
-##### Langkah 1
+##### Langkah 1: Menyiapkan file uji ACL
 ```bash
+mkdir ~/lab-acl && cd ~/lab-acl
+echo "Data penting" > confidential.txt
+chmod 640 confidential.txt
+ls -l confidential.txt
+getfacl confidential.txt
 
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ mkdir lab-acl && cd lab-acl
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ echo "Data Penting" > confidental.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ chmod 640 confidental.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ ls -l confidental.txt
+-rw-r----- 1 galihcandra galihcandra 13 May  9 14:50 confidental.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ getfacl confidental.txt
+# file: confidental.txt
+# owner: galihcandra
+# group: galihcandra
+user::rw-
+group::r--
+other::---
+```
+
+##### Langkah 2: Menambahkan ACL untuk satu user
+```bash
+setfacl -m u:userA:r confidential.txt
+ls -l confidential.txt
+getfacl confidential.txt
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ setfacl -m u:userA:r confidental.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ ls -l confidental.txt
+-rw-r-----+ 1 galihcandra galihcandra 13 May  9 14:50 confidental.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ getfacl confidental.txt
+# file: confidental.txt
+# owner: galihcandra
+# group: galihcandra
+user::rw-
+user:userA:r--
+group::r--
+mask::r--
+other::---
+```
+
+##### Langkah 3: Default ACL pada direktori
+```bash
+mkdir shared
+setfacl -d -m u:userA:rwx shared
+setfacl -d -m u:userB:r-x shared
+getfacl shared
+
+touch shared/inherited.txt
+getfacl shared/inherited.txt
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ mkdir shared
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ setfacl -d -m u:userA:rwx shared
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ setfacl -d -m u:userB:r-x shared
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ getfacl shared/
+# file: shared/
+# owner: galihcandra
+# group: galihcandra
+user::rwx
+group::r-x
+other::r-x
+default:user::rwx
+default:user:userA:rwx
+default:user:userB:r-x
+default:group::r-x
+default:mask::rwx
+default:other::r-x
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ touch shared/inherited.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ getfacl shared/inherited.txt
+# file: shared/inherited.txt
+# owner: galihcandra
+# group: galihcandra
+user::rw-
+user:userA:rwx                  #effective:rw-
+user:userB:r-x                  #effective:r--
+group::r-x                      #effective:r--
+mask::rw-
+other::r--
+```
+
+#### Analisis
+1. Mengapa getfacl confidential.txt awalnya tidak menampilkan user tertentu?
+2. Setelah setfacl -m u:userA:r confidential.txt, apa perbedaan output ls -l dan getfacl?
+3. Mengapa file inherited.txt mewarisi ACL dari direktori shared?
+
+##### Jawaban:
+1. Karena file tersebut awalnya tidak memiliki ACL tambahan.
+dengan permission Unix biasa: owner, group, dan others.
+2. Perbedaan utamanya, jika ls -l itu hanya menampilkan informasi secara singkat, sedangkan getfacl outputnya lebih spesifik.
+3. Karena dir shared memiliki default ACL, sehingga setiap file/dir baru akan mewarisi ACL tersebut.
+
+#### Tantangan
+Tambahkan satu ACL lagi agar group readonly-group hanya dapat membaca confidential.txt. Setelah
+itu, hapus ACL untuk userA dan verifikasi hasil akhirnya dengan getfacl.
+
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ setfacl -m g:readonly-group:r confidental.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ setfacl -x u:userA confidental.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11/lab-acl$ getfacl confidental.txt
+# file: confidental.txt
+# owner: galihcandra
+# group: galihcandra
+user::rw-
+group::r--
+group:readonly-group:r--
+mask::r--
+other::---
 ```
 
 ## 1.3 Manajemen User dan Group
