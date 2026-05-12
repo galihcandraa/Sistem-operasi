@@ -382,7 +382,6 @@ Buat user bernama intern yang:
 • dipaksa ganti password pada login pertama;
 • password expired setelah 45 hari dengan warning 7 hari sebelumnya.
 
-##### Jawaban:
 ```bash
 galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo useradd -m -s /bin/bash intern
 galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo usermod -aG labgroup intern
@@ -403,21 +402,82 @@ Number of days of warning before password expires       : 7
 ## 1.4 Konfigurasi sudo dan su
 ## Praktikum 11.4 — Konfigurasi sudo
 
+##### Langkah 1: Buat file konfigurasi sudo khusus untuk userA.
+```bash
+sudo visudo -f /etc/sudoers.d/lab-userA
+Isi Script:
+userA ALL=(root) NOPASSWD: /usr/bin/apt update, /usr/bin/apt upgrade
+userA ALL=(root) /bin/systemctl status *
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo visudo -f /etc/sudoers.d/lab-userA
+```
+
+##### Langkah 2: Verifikasi aturan yang aktif dan uji hasilnya.
+```bash
+sudo -l -U userA
+sudo grep "userA" /var/log/auth.log | tail -10
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo -l -U userA
+Matching Defaults entries for userA on LAPTOP-QQ597UPT:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,
+    use_pty
+
+User userA may run the following commands on LAPTOP-QQ597UPT:
+    (root) NOPASSWD: /usr/bin/apt update, /usr/bin/apt upgrade
+    (root) /bin/systemctl status *
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo grep "userA" /var/log/auth.log | tail -10
+2026-05-09T19:38:24.908239+07:00 LAPTOP-QQ597UPT usermod[2564]: add 'userA' to group 'labgroup'
+2026-05-09T19:38:24.909029+07:00 LAPTOP-QQ597UPT usermod[2564]: add 'userA' to shadow group 'readonly-group'
+2026-05-09T19:38:24.910352+07:00 LAPTOP-QQ597UPT usermod[2564]: add 'userA' to shadow group 'labgroup'
+2026-05-09T19:52:41.441726+07:00 LAPTOP-QQ597UPT sudo: galihcandra : TTY=pts/0 ; PWD=/home/galihcandra/Kuliah/Sem 2/praktikum-os/week11 ; USER=root ; COMMAND=/usr/bin/chage -M 60 -W 7 -m 1 userA
+2026-05-09T19:52:44.673618+07:00 LAPTOP-QQ597UPT chage[2608]: changed password expiry for userA
+2026-05-09T19:52:47.756582+07:00 LAPTOP-QQ597UPT sudo: galihcandra : TTY=pts/0 ; PWD=/home/galihcandra/Kuliah/Sem 2/praktikum-os/week11 ; USER=root ; COMMAND=/usr/bin/chage -l userA
+2026-05-09T19:53:34.527188+07:00 LAPTOP-QQ597UPT sudo: galihcandra : TTY=pts/0 ; PWD=/home/galihcandra/Kuliah/Sem 2/praktikum-os/week11 ; USER=root ; COMMAND=/usr/bin/chage -d 0 userA
+2026-05-09T19:53:34.697224+07:00 LAPTOP-QQ597UPT chage[2617]: changed password expiry for userA
+2026-05-09T20:22:40.928203+07:00 LAPTOP-QQ597UPT sudo: galihcandra : TTY=pts/0 ; PWD=/home/galihcandra/Kuliah/Sem 2/praktikum-os/week11 ; USER=root ; COMMAND=/usr/sbin/visudo -f /etc/sudoers.d/lab-userA
+2026-05-09T20:34:16.312035+07:00 LAPTOP-QQ597UPT sudo: galihcandra : TTY=pts/0 ; PWD=/home/galihcandra/Kuliah/Sem 2/praktikum-os/week11 ; USER=root ; COMMAND=/usr/bin/grep userA /var/log/auth.log
+```
+
+#### Analisis
+1. Mengapa aturan disimpan di /etc/sudoers.d//, bukan langsung di /etc/sudoers?
+2. Mana perintah yang bisa dijalankan tanpa password, dan mana yang masih perlu autentikasi?
+3. Informasi apa saja yang dicatat di log sudo?
+
+##### Jawaban:
+1. Karena jika di /etc/sudoers.d/ akan membuat konfigurasi rapi, mudah dikelola, dan memudahkan penambahan aturan untuk user tertentu.
+2. Perintah yang dapat dijalankan tanpa password adalah:
+    /usr/bin/apt update
+    /usr/bin/apt upgrade
+Sedangkan perintah yang memerlukan password adalah:
+/bin/systemctl status *
+3. berbagai informasi, seperti nama user, waktu, terminal yang digunakan, command yang dijalankan, dan status autentikasi.
+
+#### Tantangan
+Tambahkan satu aturan baru agar userA boleh menjalankan /bin/systemctl restart ssh tetapi tidak boleh
+menjalankan reboot.
+
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo visudo -f /etc/sudoers.d/lab-userA
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo -l -U userA
+Matching Defaults entries for userA on LAPTOP-QQ597UPT:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,
+    use_pty
+
+User userA may run the following commands on LAPTOP-QQ597UPT:
+    (root) NOPASSWD: /usr/bin/apt update, /usr/bin/apt upgrade
+    (root) /bin/systemctl status *
+    (root) /bin/systemctl restart ssh, !/usr/sbin/reboot
+
+script:
+userA ALL=(root) /bin/systemctl restart ssh, !/usr/sbin/reboot
+```
+
 ## 1.5 Disk Quota
 ## Praktikum 11.5 — Disk Quota
-
-## 1.6 Rangkuman
-```bash
-Bab ini membahas lima kelompok konsep inti:
-Permissions owner, group, others; izin rwx; chmod, chown, chgrp; special bits; dan umask.
-ACL perluasan permission Unix untuk kebutuhan akses granular per-user atau per-group, termasuk default ACL
-direktori dan mask.
-User/Group identitas pengguna disimpan di /etc/passwd, /etc/shadow, dan /etc/group; dikelola dengan keluarga perintah useradd, usermod, userdel, groupadd, dan gpasswd.
-sudo dan su sudo adalah mekanisme delegasi hak administratif yang lebih aman dan lebih dapat diaudit
-dibanding su.
-Disk Quota pembatasan blok dan inode melalui soft limit, hard limit, grace period, serta perintah seperti
-edquota, setquota, dan repquota.
-```
   
 ## 1.7 Latihan
 
