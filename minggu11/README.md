@@ -581,7 +581,192 @@ tiga file yang Anda kenali beserta alasannya.
 group webapp-team dapat menulis, user deploy hanya membaca, dan file baru selalu mewarisi
 group proyek
 
+Jawaban:
+1. 
+```bash
+find / -perm -4000 -type f 2>/dev/null
+    karena tidak ada output, maka mengecek manual:
+    ls -l /usr/bin/passwd
+    ls -l /usr/bin/sudo
+    ls -l /usr/bin/chsh
+
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~$ find / -perm -4000 -type f 2>/dev/null
+
+^C
+galihcandra@LAPTOP-QQ597UPT:~$ ls -l /usr/bin/passwd
+-rwsr-xr-x 1 root root 64152 May 30  2024 /usr/bin/passwd
+galihcandra@LAPTOP-QQ597UPT:~$ ls -l /usr/bin/sudo
+-rwsr-xr-x 1 root root 277936 Mar  2 19:56 /usr/bin/sudo
+galihcandra@LAPTOP-QQ597UPT:~$ ls -l /usr/bin/chsh
+-rwsr-xr-x 1 root root 44760 May 30  2024 /usr/bin/chsh
+
+1. /usr/bin/passwd
+Fungsi: digunakan untuk mengganti password user Linux.
+Alasan memakai SUID: karena command passwd harus dapat mengubah file /etc/shadow yang hanya dapat diakses root. Dengan SUID, user biasa tetap bisa mengganti password miliknya sendiri.
+2. /usr/bin/sudo
+Fungsi: digunakan untuk menjalankan command sebagai root atau user lain.
+Alasan memakai SUID: karena sudo perlu memperoleh hak administrator sementara agar dapat menjalankan command administratif sesuai aturan sudoers.
+3. /usr/bin/chsh
+Fungsi: digunakan untuk mengganti default shell user.
+Alasan memakai SUID: karena perubahan shell disimpan di file /etc/passwd yang hanya dapat dimodifikasi root. Dengan SUID, user biasa dapat mengganti shell miliknya sendiri tanpa login sebagai root.
+```
+
+2. 
+```bash
+galihcandra@LAPTOP-QQ597UPT:~$ find / -type d -perm -0002 2>/dev/null | head
+/mnt/wslg
+/mnt/wslg/runtime-dir
+/mnt/wslg/.X11-unix
+/mnt/wsl
+/mnt/c
+/mnt/c/$Recycle.Bin
+/mnt/c/$Recycle.Bin/S-1-5-21-4223634718-2644835734-2717954861-1001
+/mnt/c/$Recycle.Bin/S-1-5-21-4223634718-2644835734-2717954861-1001/$R7RG2BQ
+/mnt/c/$Recycle.Bin/S-1-5-21-4223634718-2644835734-2717954861-1001/$R8XRLHX
+/mnt/c/$Recycle.Bin/S-1-5-21-4223634718-2644835734-2717954861-1001/$R8XRLHX/Update
+
+
+
+Direktori world-writable yang ditemukan ada yang valid dan ada yang berisiko.
+
+Direktori valid:
+
+/mnt/wslg
+/mnt/wslg/runtime-dir
+/mnt/wslg/.X11-unix
+
+Direktori tersebut valid karena digunakan sistem WSLg untuk kebutuhan GUI dan runtime bersama.
+
+Direktori berpotensi berisiko:
+
+/mnt/c
+/mnt/c/$Recycle.Bin/...
+
+Berisiko karena berada pada filesystem bersama sehingga jika permission terlalu longgar user lain dapat mengubah atau menghapus file.
+```
+
+3. 
+```bash
+sudo groupadd webapp-team
+sudo mkdir -p /srv/webapp
+sudo chgrp webapp-team /srv/webapp
+sudo chmod 2775 /srv/webapp
+
+sudo useradd -m deploy
+sudo setfacl -m u:deploy:rx /srv/webapp
+sudo setfacl -d -m g:webapp-team:rwx /srv/webapp
+sudo setfacl -d -m u:deploy:rx /srv/webapp
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~$ sudo groupadd webapp-team
+galihcandra@LAPTOP-QQ597UPT:~$ sudo mkdir -p /srv/webapp
+galihcandra@LAPTOP-QQ597UPT:~$ sudo chgrp webapp-team /srv/webapp
+galihcandra@LAPTOP-QQ597UPT:~$ sudo chmod 2775 /srv/webapp
+galihcandra@LAPTOP-QQ597UPT:~$ sudo useradd -m deploy
+galihcandra@LAPTOP-QQ597UPT:~$ sudo setfacl -m u:deploy:rx /srv/webapp
+galihcandra@LAPTOP-QQ597UPT:~$ sudo setfacl -d -m g:webapp-team:rwx /srv/webapp
+galihcandra@LAPTOP-QQ597UPT:~$ sudo setfacl -d -m u:deploy:rx /srv/webapp
+galihcandra@LAPTOP-QQ597UPT:~$ getfacl /srv/webapp
+getfacl: Removing leading '/' from absolute path names
+# file: srv/webapp
+# owner: root
+# group: webapp-team
+# flags: -s-
+user::rwx
+user:deploy:r-x
+group::rwx
+mask::rwx
+other::r-x
+default:user::rwx
+default:user:deploy:r-x
+default:group::rwx
+default:group:webapp-team:rwx
+default:mask::rwx
+default:other::r-x
+```
+
 ### Latihan Latihan 11.B — Kebijakan Akun dan Quota
 Tuliskan langkah untuk membuat user intern, menambahkannya ke group labgroup, memaksa pergantian password tiap 45 hari (warning 7 hari), memberi izin sudo hanya untuk systemctl status, dan
 menetapkan quota ruang serta inode sederhana pada /home/.
 
+Jawaban:
+```bash
+sudo useradd -m intern
+sudo passwd intern
+sudo usermod -aG labgroup intern
+sudo chage -M 45 -W 7 intern
+sudo visudo -f /etc/sudoers.d/intern
+sudo systemctl status
+sudo edquota -u intern
+
+id intern
+sudo chage -l intern
+sudo -l -U intern
+sudo quota -u intern
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~$ sudo useradd -m intern
+useradd: user 'intern' already exists
+galihcandra@LAPTOP-QQ597UPT:~$ sudo passwd intern
+New password:
+Retype new password:
+passwd: password updated successfully
+galihcandra@LAPTOP-QQ597UPT:~$ sudo usermod -aG labgroup intern
+galihcandra@LAPTOP-QQ597UPT:~$ sudo chage -M 45 -W 7 intern
+galihcandra@LAPTOP-QQ597UPT:~$ sudo visudo -f /etc/sudoers.d/intern
+galihcandra@LAPTOP-QQ597UPT:~$ sudo systemctl status
+● LAPTOP-QQ597UPT
+    State: running
+    Units: 359 loaded (incl. loaded aliases)
+     Jobs: 0 queued
+   Failed: 0 units
+    Since: Tue 2026-05-12 21:40:31 +07; 22min ago
+  systemd: 255.4-1ubuntu8.14
+   CGroup: /
+           ├─init.scope
+           │ ├─  1 /sbin/init
+           │ ├─  2 /init
+           │ ├─  7 plan9 --control-socket 7 --log-level 4 --ser>
+           │ ├─250 /init
+           │ ├─251 /init
+           │ ├─254 -bash
+           │ ├─570 sudo systemctl status
+           │ ├─571 sudo systemctl status
+           │ ├─572 systemctl status
+           │ └─573 less
+           ├─system.slice
+           │ ├─console-getty.service
+           │ │ └─197 /sbin/agetty -o "-p -- \\u" --noclear --ke>
+           │ ├─cron.service
+           │ │ └─170 /usr/sbin/cron -f -P
+           │ ├─dbus.service
+           │ │ └─171 @dbus-daemon --system --address=systemd: ->
+           │ ├─rsyslog.service
+           │ │ └─185 /usr/sbin/rsyslogd -n -iNONE
+           │ ├─system-getty.slice
+           │ │ └─getty@tty1.service
+           │ │   └─216 /sbin/agetty -o "-p -- \\u" --noclear - >
+galihcandra@LAPTOP-QQ597UPT:~$ sudo edquota -u intern
+No filesystems with quota detected.
+galihcandra@LAPTOP-QQ597UPT:~$ id intern
+uid=1003(intern) gid=1005(intern) groups=1005(intern),1004(labgroup)
+galihcandra@LAPTOP-QQ597UPT:~$ sudo chage -l intern
+Last password change                                    : May 12, 2026
+Password expires                                        : Jun 26, 2026
+Password inactive                                       : never
+Account expires                                         : never
+Minimum number of days between password change          : 0
+Maximum number of days between password change          : 45
+Number of days of warning before password expires       : 7
+galihcandra@LAPTOP-QQ597UPT:~$ sudo -l -U intern
+Matching Defaults entries for intern on LAPTOP-QQ597UPT:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,
+    use_pty
+
+User intern may run the following commands on LAPTOP-QQ597UPT:
+    (root) /bin/systemctl status *
+galihcandra@LAPTOP-QQ597UPT:~$ sudo quota -u intern
+```
