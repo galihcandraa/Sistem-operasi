@@ -478,6 +478,98 @@ userA ALL=(root) /bin/systemctl restart ssh, !/usr/sbin/reboot
 
 ## 1.5 Disk Quota
 ## Praktikum 11.5 — Disk Quota
+#### Langkah 1: Buat image filesystem kecil dan mount dengan opsi quota
+```bash
+sudo dd if=/dev/zero of=/tmp/quota-test.img bs=1M count=100
+sudo mkfs.ext4 /tmp/quota-test.img
+sudo mkdir -p /mnt/quota-test
+sudo mount -o loop,usrquota,grpquota /tmp/quota-test.img /mnt/quota-test
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo dd if=/dev/zero of=/tmp/quota-test.img bs=1M count=100
+100+0 records in
+100+0 records out
+104857600 bytes (105 MB, 100 MiB) copied, 4.97615 s, 21.1 MB/s
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo mkfs.ext4 /tmp/quota-test.img
+mke2fs 1.47.0 (5-Feb-2023)
+Discarding device blocks: done
+Creating filesystem with 25600 4k blocks and 25600 inodes
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (1024 blocks): done
+Writing superblocks and filesystem accounting information: done
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo mkdir -p /mnt/quota-test
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo mount -o loop,usrquota,grpquota /tmp/quota-test.img /mnt/quota-test
+```
+
+#### Langkah 2: Buat database quota dan aktifkan enforcement.
+```bash
+sudo quotacheck -cug /mnt/quota-test
+sudo quotaon -v /mnt/quota-test
+sudo repquota /mnt/quota-test
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo quotacheck -cug /mnt/quota-test
+[sudo] password for galihcandra:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo quotaon -v /mnt/quota-test
+quotaon: Your kernel probably supports ext4 quota feature but you are using external quota files. Please switch your filesystem to use ext4 quota feature as external quota files on ext4 are deprecated.
+/dev/loop0 [/mnt/quota-test]: group quotas turned on
+/dev/loop0 [/mnt/quota-test]: user quotas turned on
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo repquota /mnt/quota-test
+*** Report for user quotas on device /dev/loop0
+Block grace time: 7days; Inode grace time: 7days
+                        Block limits                File limits
+User            used    soft    hard  grace    used  soft  hard  grace
+----------------------------------------------------------------------
+root      --      20       0       0              2     0     0 
+```
+
+#### Langkah 3: Tetapkan quota untuk user uji dan amati hasilnya
+```bash
+sudo edquota -u userA
+sudo repquota /mnt/quota-test
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo edquota -u userA
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo repquota /mnt/quota-test
+*** Report for user quotas on device /dev/loop0
+Block grace time: 7days; Inode grace time: 7days
+                        Block limits                File limits
+User            used    soft    hard  grace    used  soft  hard  grace
+----------------------------------------------------------------------
+root      --      20       0       0              2     0     0 
+
+Isi editor:
+Disk quotas for user userA (uid 1001):
+  Filesystem                   blocks       soft       hard    >
+  /dev/loop0                        0       5120      10240    >
+```
+
+#### Langkah 4: Bersihkan lingkungan uji setelah selesai.
+```bash
+sudo quotaoff /mnt/quota-test
+sudo umount /mnt/quota-test
+sudo rm /tmp/quota-test.img
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo quotaoff /mnt/quota-test
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo umount /mnt/quota-test
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week11$ sudo rm /tmp/quota-test.img
+```
+
+## 1.6 Rangkuman
+```bash
+Bab ini membahas lima kelompok konsep inti:
+Permissions owner, group, others; izin rwx; chmod, chown, chgrp; special bits; dan umask.
+ACL perluasan permission Unix untuk kebutuhan akses granular per-user atau per-group, termasuk default ACL
+direktori dan mask.
+User/Group identitas pengguna disimpan di /etc/passwd, /etc/shadow, dan /etc/group; dikelola dengan keluarga perintah useradd, usermod, userdel, groupadd, dan gpasswd.
+sudo dan su sudo adalah mekanisme delegasi hak administratif yang lebih aman dan lebih dapat diaudit
+dibanding su.
+Disk Quota pembatasan blok dan inode melalui soft limit, hard limit, grace period, serta perintah seperti
+edquota, setquota, dan repquota.
+```
   
 ## 1.7 Latihan
 
