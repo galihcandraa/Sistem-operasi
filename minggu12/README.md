@@ -513,13 +513,77 @@ RestartSec=10s
 
 [Install]
 WantedBy=multi-user.target
+
+
+Perbedaan perilaku dibanding versi sebelumnya terdapat pada waktu restart yang awalnya 3 sec menjadi 10 sec, dan perubahan enviroment port yang awalnya 9090 menjadi 9091.
 ```
 
 ## 1.4 Logging dengan journalctl
 
 ## Praktek 12.4: Filter dan Analisis Log Layanan
 ```bash
+journalctl -u ssh --since "1 hour ago" --no-pager
+journalctl -b -p err --no-pager
+journalctl -u ssh -f
+ssh localhost // terminal 2
+journalctl -u ssh --since today --no-pager > log-ssh-hari-ini.txt
+wc -l log-ssh-hari-ini.txt
+grep -i "error\|failed" log-ssh-hari-ini.txt | head -20
 
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ journalctl -u ssh --since "1 hour ago" --no-pager
+May 19 22:14:12 LAPTOP-QQ597UPT systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+May 19 22:14:12 LAPTOP-QQ597UPT sshd[772]: Server listening on 0.0.0.0 port 22.
+May 19 22:14:12 LAPTOP-QQ597UPT sshd[772]: Server listening on :: port 22.
+May 19 22:14:12 LAPTOP-QQ597UPT systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ journalctl -b -p err --no-pager | head -n 5
+May 19 20:25:53 LAPTOP-QQ597UPT kernel: PCI: Fatal: No config space access function found
+May 19 20:25:53 LAPTOP-QQ597UPT unknown: WSL (175) ERROR: CheckConnection: getaddrinfo() failed: -5
+May 19 20:25:53 LAPTOP-QQ597UPT kernel: misc dxg: dxgk: dxgkio_is_feature_enabled: Ioctl failed: -22
+May 19 20:25:53 LAPTOP-QQ597UPT kernel: misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -22
+May 19 20:25:53 LAPTOP-QQ597UPT kernel: misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -22
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ journalctl -u ssh -f
+May 19 22:14:12 LAPTOP-QQ597UPT systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+May 19 22:14:12 LAPTOP-QQ597UPT sshd[772]: Server listening on 0.0.0.0 port 22.
+May 19 22:14:12 LAPTOP-QQ597UPT sshd[772]: Server listening on :: port 22.
+May 19 22:14:12 LAPTOP-QQ597UPT systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+
+Terminal 2:
+galihcandra@LAPTOP-QQ597UPT:~$ ssh localhost
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ED25519 key fingerprint is SHA256:/UAZ6xPLVvdbL/0WGN5yttUMBijQZHsEJfbDh4HgN1U.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'localhost' (ED25519) to the list of known hosts.
+galihcandra@localhost's password:
+
+Terminal 1:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ journalctl -u ssh -f
+May 19 22:14:12 LAPTOP-QQ597UPT systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+May 19 22:14:12 LAPTOP-QQ597UPT sshd[772]: Server listening on 0.0.0.0 port 22.
+May 19 22:14:12 LAPTOP-QQ597UPT sshd[772]: Server listening on :: port 22.
+May 19 22:14:12 LAPTOP-QQ597UPT systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+May 19 23:02:26 LAPTOP-QQ597UPT sshd[1669]: Accepted password for galihcandra from 127.0.0.1 port 59476 ssh2
+May 19 23:02:26 LAPTOP-QQ597UPT sshd[1669]: pam_unix(sshd:session): session opened for user galihcandra(uid=1000) by galihcandra(uid=0)
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ journalctl -u ssh --since today --no-pager > log-ssh-hari-ini.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ wc -l log-ssh-hari-ini.txt
+6 log-ssh-hari-ini.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ grep -i "error\|failed" log-ssh-hari-ini.txt | head -20
+```
+
+### Tantangan
+```bash
+Perintah lengkap:
+journalctl -u ssh -p err --since "24 hours ago" --no-pager > error-ssh-24jam.txt
+wc -l error-ssh-24jam.txt
+sort error-ssh-24jam.txt | uniq -c | sort -rn | head -10
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ journalctl -u ssh -p err --since "24 hours ago" --no-pager > error-ssh-24jam.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ wc -l error-ssh-24jam.txt
+1 error-ssh-24jam.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sort error-ssh-24jam.txt | uniq -c | sort -rn | head -10
+      1 -- No entries --
 ```
 
 ## 1.5 Konfigurasi Layanan Jaringan
