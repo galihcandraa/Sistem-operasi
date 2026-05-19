@@ -304,7 +304,215 @@ done < daftar-layanan.txt
 
 ## Praktek 12.3: Buat Layanan Sederhana dari Skrip Bash
 ```bash
+cd ~/Kuliah/Sem\ 2/praktikum-os/
 
+mkdir -p week12-services
+
+cd week12-services
+
+mkdir -p situs-demo
+
+cat > situs-demo/index.html <<EOF
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Halo dari layanan systemd kustom!</h1>
+<p>Layanan ini dibuat pada praktek Bab 10.</p>
+</body>
+</html>
+EOF
+
+cat > jalankan-server.sh <<EOF
+#!/bin/bash
+
+DIREKTORI="\$HOME/Kuliah/Sem 2/praktikum-os/week12-services/situs-demo"
+PORT=9090
+
+echo "Memulai server di port \$PORT..."
+
+exec python3 -m http.server \$PORT --directory "\$DIREKTORI"
+EOF
+
+chmod +x jalankan-server.sh
+
+cat > demo-web.service <<EOF
+[Unit]
+Description=Demo Web Server Praktek Bab 10
+After=network.target
+
+[Service]
+Type=simple
+User=galihcandra
+WorkingDirectory=/home/galihcandra/Kuliah/Sem 2/praktikum-os/week12-services/situs-demo
+ExecStart=/usr/bin/python3 -m http.server 9090
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo cp demo-web.service /etc/systemd/system/demo-web.service
+
+sudo systemctl daemon-reload
+
+sudo systemctl start demo-web
+
+systemctl status demo-web
+
+curl http://localhost:9090
+
+systemctl status demo-web | grep "Main PID"
+
+sudo kill -9 $(systemctl show demo-web --property=MainPID --value)
+
+sleep 5
+
+systemctl status demo-web
+
+sudo systemctl disable --now demo-web
+
+sudo rm /etc/systemd/system/demo-web.service
+
+sudo systemctl daemon-reload
+
+
+
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os$ mkdir week12-services
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os$ cd week12-services
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ mkdir -p situs-demo
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ nano situs-demo/index.html
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ nano jalankan-server.sh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ chmod +x jalankan-server.sh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ nano demo-web.service
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ nano demo-web.service
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo cp ~/Kuliah/Sem\ 2/praktikum-os/week12-services/demo-web.service /etc/systemd/system/
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl daemon-reload
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl start demo-web
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl status demo-web
+● demo-web.service - Demo Web Server Praktek Bab 10
+     Loaded: loaded (/etc/systemd/system/demo-web.service; disa>
+     Active: active (running) since Tue 2026-05-19 22:42:46 WIB>
+   Main PID: 1361 (python3)
+      Tasks: 1 (limit: 2165)
+     Memory: 9.3M (peak: 9.6M)
+        CPU: 135ms
+     CGroup: /system.slice/demo-web.service
+             └─1361 /usr/bin/python3 -m http.server 9090
+
+May 19 22:42:46 LAPTOP-QQ597UPT systemd[1]: Started demo-web.se>
+lines 1-11/11 (END)
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ curl http://localhost:9090
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Halo dari layanan systemd kustom!</h1>
+<p>Layanan ini dibuat pada praktek Bab 10.</p>
+</body>
+</html>
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl status demo-web | grep "Main PID"
+   Main PID: 1361 (python3)
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo kill -9 $(systemctl show demo-web --property=MainPID --value)
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sleep 5
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl status demo-web
+● demo-web.service - Demo Web Server Praktek Bab 10
+     Loaded: loaded (/etc/systemd/system/demo-web.service; disa>
+     Active: active (running) since Tue 2026-05-19 22:44:16 WIB>
+   Main PID: 1373 (python3)
+      Tasks: 1 (limit: 2165)
+     Memory: 13.1M (peak: 13.4M)
+        CPU: 367ms
+     CGroup: /system.slice/demo-web.service
+             └─1373 /usr/bin/python3 -m http.server 9090
+
+May 19 22:44:16 LAPTOP-QQ597UPT systemd[1]: demo-web.service: S>
+May 19 22:44:16 LAPTOP-QQ597UPT systemd[1]: Started demo-web.se>
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl disable --now demo-web
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo rm /etc/systemd/system/demo-web.service
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl daemon-reload
+```
+
+### Tantangan
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo nano /etc/systemd/system/demo-web.service
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl daemon-reload
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl enable --now demo-web
+Created symlink /etc/systemd/system/multi-user.target.wants/demo-web.service → /etc/systemd/system/demo-web.service.
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl status demo-web
+● demo-web.service - Demo Web Server Praktek Bab 10
+     Loaded: loaded (/etc/systemd/system/demo-web.service; enab>
+     Active: active (running) since Tue 2026-05-19 22:49:39 WIB>
+   Main PID: 1533 (python3)
+      Tasks: 1 (limit: 2165)
+     Memory: 13.2M (peak: 13.4M)
+        CPU: 409ms
+     CGroup: /system.slice/demo-web.service
+             └─1533 /usr/bin/python3 -m http.server 9091
+
+May 19 22:49:39 LAPTOP-QQ597UPT systemd[1]: Started demo-web.se>
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ ss -tlnp | grep 9091
+LISTEN 0      5             0.0.0.0:9091      0.0.0.0:*    users:(("python3",pid=1533,fd=3))
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ curl http://localhost:9091
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Halo dari layanan systemd kustom!</h1>
+<p>Layanan ini dibuat pada praktek Bab 10.</p>
+</body>
+</html>
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl status demo-web | grep "Main PID"
+   Main PID: 1533 (python3)
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo kill -9 $(systemctl show demo-web --property=MainPID --value)
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sleep 5
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl status demo-web
+● demo-web.service - Demo Web Server Praktek Bab 10
+     Loaded: loaded (/etc/systemd/system/demo-web.service; enab>
+     Active: active (running) since Tue 2026-05-19 22:50:44 WIB>
+   Main PID: 1548 (python3)
+      Tasks: 1 (limit: 2165)
+     Memory: 1.2M (peak: 1.2M)
+        CPU: 156ms
+     CGroup: /system.slice/demo-web.service
+             └─1548 /usr/bin/python3 -m http.server 9091
+
+May 19 22:50:44 LAPTOP-QQ597UPT systemd[1]: demo-web.service: S>
+May 19 22:50:44 LAPTOP-QQ597UPT systemd[1]: Started demo-web.se>
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sleep 6
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl status demo-web
+● demo-web.service - Demo Web Server Praktek Bab 10
+     Loaded: loaded (/etc/systemd/system/demo-web.service; enab>
+     Active: active (running) since Tue 2026-05-19 22:50:44 WIB>
+   Main PID: 1548 (python3)
+      Tasks: 1 (limit: 2165)
+     Memory: 13.1M (peak: 13.5M)
+        CPU: 446ms
+     CGroup: /system.slice/demo-web.service
+             └─1548 /usr/bin/python3 -m http.server 9091
+
+May 19 22:50:44 LAPTOP-QQ597UPT systemd[1]: demo-web.service: S>
+May 19 22:50:44 LAPTOP-QQ597UPT systemd[1]: Started demo-web.se>
+lines 1-12/12 (END)
+
+Isi script modifikasi:
+[Unit]
+Description=Demo Web Server Praktek Bab 10
+After=network.target
+
+[Service]
+Type=simple
+User=galihcandra
+WorkingDirectory=/home/galihcandra/Kuliah/Sem 2/praktikum-os/week12-services/situs-demo
+
+Environment="PORT=9091"
+
+ExecStart=/usr/bin/python3 -m http.server ${PORT}
+
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
 ```
 
 ## 1.4 Logging dengan journalctl
