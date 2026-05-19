@@ -10,6 +10,9 @@
 ## Praktek 12.1: Amati Layanan Aktif Saat Boot
 ```bash
 systemctl list-units --type=service --state=running
+systemctl list-unit-files --type=service | head -30
+systemctl status ssh
+systemd-analyze blame | head -15
 
 Output:
 galihcandra@LAPTOP-QQ597UPT:~$ systemctl list-units --type=service --state=running
@@ -191,7 +194,110 @@ systemd-sysctl.service	912ms	        Mengatur parameter kernel Linux dari file k
 
 ## Praktek 12.2: Kelola Layanan SSH
 ```bash
+systemctl status ssh
+systemctl is-active ssh
+systemctl is-enabled ssh
+sudo systemctl restart ssh
+systemctl status ssh
+systemctl list-dependencies ssh
+systemctl --failed
 
+Output:
+galihcandra@LAPTOP-QQ597UPT:~$ systemctl status ssh
+○ ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/usr/lib/systemd/system/ssh.service; disab>
+     Active: inactive (dead)
+TriggeredBy: ● ssh.socket
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+
+galihcandra@LAPTOP-QQ597UPT:~$ systemctl is-active ssh
+inactive
+
+galihcandra@LAPTOP-QQ597UPT:~$ systemctl is-enabled ssh
+disabled
+
+galihcandra@LAPTOP-QQ597UPT:~$ sudo systemctl restart ssh
+[sudo] password for galihcandra:
+
+galihcandra@LAPTOP-QQ597UPT:~$ systemctl status ssh
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/usr/lib/systemd/system/ssh.service; disab>
+     Active: active (running) since Tue 2026-05-19 22:14:12 WIB>
+TriggeredBy: ● ssh.socket
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 771 ExecStartPre=/usr/sbin/sshd -t (code=exited, s>
+   Main PID: 772 (sshd)
+      Tasks: 1 (limit: 2165)
+     Memory: 3.9M (peak: 4.0M)
+        CPU: 112ms
+     CGroup: /system.slice/ssh.service
+             └─772 "sshd: /usr/sbin/sshd -D [listener] 0 of 10->
+
+May 19 22:14:12 LAPTOP-QQ597UPT systemd[1]: Starting ssh.servic>
+May 19 22:14:12 LAPTOP-QQ597UPT sshd[772]: Server listening on >
+May 19 22:14:12 LAPTOP-QQ597UPT sshd[772]: Server listening on >
+May 19 22:14:12 LAPTOP-QQ597UPT systemd[1]: Started ssh.service>
+galihcandra@LAPTOP-QQ597UPT:~$ systemctl list-dependencies ssh
+ssh.service
+● ├─ssh.socket
+● ├─system.slice
+● └─sysinit.target
+○   ├─apparmor.service
+●   ├─dev-hugepages.mount
+●   ├─dev-mqueue.mount
+●   ├─keyboard-setup.service
+●   ├─kmod-static-nodes.service
+○   ├─ldconfig.service
+○   ├─proc-sys-fs-binfmt_misc.automount
+●   ├─setvtrgb.service
+●   ├─sys-fs-fuse-connections.mount
+●   ├─sys-kernel-config.mount
+●   ├─sys-kernel-debug.mount
+●   ├─sys-kernel-tracing.mount
+●   ├─systemd-ask-password-console.path
+●   ├─systemd-binfmt.service
+○   ├─systemd-firstboot.service
+○   ├─systemd-hwdb-update.service
+○   ├─systemd-journal-catalog-update.service
+●   ├─systemd-journal-flush.service
+●   ├─systemd-journald.service
+○   ├─systemd-machine-id-commit.service
+●   ├─systemd-modules-load.service
+○   ├─systemd-pcrmachine.service
+○   ├─systemd-pcrphase-sysinit.service
+○   ├─systemd-pcrphase.service
+○   ├─systemd-pstore.service
+○   ├─systemd-random-seed.service
+○   ├─systemd-repart.service
+galihcandra@LAPTOP-QQ597UPT:~$ systemctl --failed
+  UNIT LOAD ACTIVE SUB DESCRIPTION
+
+0 loaded units listed.
+```
+
+### Tantangan
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12/scripts$ nano daftar-layanan.txt
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12/scripts$ nano cek-layanan.sh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12/scripts$ chmod +x cek-layanan.sh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12/scripts$ ./cek-layanan.sh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12/scripts$ cat laporan-layanan.log
+[Tue May 19 22:19:04 WIB 2026] ssh: active
+[Tue May 19 22:19:04 WIB 2026] cron: active
+[Tue May 19 22:19:04 WIB 2026] rsyslog: active
+
+Isi Script:
+#!/bin/bash
+
+while read layanan
+do
+    STATUS=$(systemctl is-active $layanan)
+
+    echo "[$(date)] $layanan: $STATUS" >> laporan-layanan.log
+
+done < daftar-layanan.txt
 ```
 
 ## 1.3 Membuat Berkas Unit Kustom
