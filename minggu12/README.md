@@ -91,9 +91,7 @@ galihcandra@LAPTOP-QQ597UPT:~$ systemd-analyze blame | head -15
 ```
 
 ### Tantangan
-Identifikasi tiga layanan dengan waktu inisialisasi terlama menggunakan systemd-analyze
-blame. Gunakan pipeline dari Bab 3 (| sort -rh | head -3) untuk mempercepat pencariannya. Untuk setiap layanan, cari tahu fungsinya dengan systemctl cat nama-layanan.
-Tuliskan nama layanan, waktu inisialisasinya, dan penjelasan singkat fungsinya.
+Identifikasi tiga layanan dengan waktu inisialisasi terlama menggunakan systemd-analyze blame. Gunakan pipeline dari Bab 3 (| sort -rh | head -3) untuk mempercepat pencariannya. Untuk setiap layanan, cari tahu fungsinya dengan systemctl cat nama-layanan. Tuliskan nama layanan, waktu inisialisasinya, dan penjelasan singkat fungsinya.
 
 ```bash
 galihcandra@LAPTOP-QQ597UPT:~$ systemd-analyze blame | sort -rh | head -3
@@ -282,11 +280,7 @@ galihcandra@LAPTOP-QQ597UPT:~$ systemctl --failed
 ```
 
 ### Tantangan
-Buat skrip Bash (referensi Bab 7) bernama cek-layanan.sh yang memeriksa status daftar layanan
-dari sebuah berkas teks. Berkas teks daftar-layanan.txt berisi satu nama layanan per baris (isi
-minimal: ssh, cron, rsyslog). Skrip membaca setiap nama layanan, memeriksa statusnya dengan
-systemctl is-active, lalu menulis laporan ke berkas laporan-layanan.log dengan format:
-[TANGGAL] nama-layanan: ACTIVE/INACTIVE. Gunakan date untuk mendapatkan tanggal.
+Buat skrip Bash (referensi Bab 7) bernama cek-layanan.sh yang memeriksa status daftar layanan dari sebuah berkas teks. Berkas teks daftar-layanan.txt berisi satu nama layanan per baris (isi minimal: ssh, cron, rsyslog). Skrip membaca setiap nama layanan, memeriksa statusnya dengan systemctl is-active, lalu menulis laporan ke berkas laporan-layanan.log dengan format: [TANGGAL] nama-layanan: ACTIVE/INACTIVE. Gunakan date untuk mendapatkan tanggal.
 
 ```bash
 galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12/scripts$ nano daftar-layanan.txt
@@ -444,12 +438,7 @@ galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo sy
 ```
 
 ### Tantangan
-Modifikasi berkas unit demo-web.service sebelum menghapusnya: tambahkan
-RestartSec=10s agar sistemmenunggu 10 detik sebelum mencoba restart, dan tambahkan
-Environment="PORT=9091" lalu ubah ExecStart agar menggunakan variabel tersebut. Aktifkan
-layanan dengan enable dan WantedBy=multi-user.target, lalu uji apakah layanan aktif
-setelah systemctl daemon-reload. Dokumentasikan perbedaan perilaku dibanding versi
-sebelumnya
+Modifikasi berkas unit demo-web.service sebelum menghapusnya: tambahkan RestartSec=10s agar sistemmenunggu 10 detik sebelum mencoba restart, dan tambahkan Environment="PORT=9091" lalu ubah ExecStart agar menggunakan variabel tersebut. Aktifkan layanan dengan enable dan WantedBy=multi-user.target, lalu uji apakah layanan aktif setelah systemctl daemon-reload. Dokumentasikan perbedaan perilaku dibanding versi sebelumnya
 
 ```bash
 galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo nano /etc/systemd/system/demo-web.service
@@ -589,9 +578,7 @@ galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ grep -i
 ```
 
 ### Tantangan
-Ekstrak semua log dengan prioritas error (-p err) dari 24 jam terakhir untuk layanan SSH, simpan
-ke berkas error-ssh-24jam.txt. Gunakan pipeline dari Bab 3 untuk menghitung total jumlah
-baris error dengan wc -l, lalu tampilkan 10 pesan error yang paling sering muncul menggunakan
+Ekstrak semua log dengan prioritas error (-p err) dari 24 jam terakhir untuk layanan SSH, simpan ke berkas error-ssh-24jam.txt. Gunakan pipeline dari Bab 3 untuk menghitung total jumlah baris error dengan wc -l, lalu tampilkan 10 pesan error yang paling sering muncul menggunakan
 sort | uniq -c | sort -rn | head -10. Tuliskan perintah lengkap yang kamu gunakan.
 
 ```bash
@@ -692,12 +679,7 @@ LISTEN 0      4096             [::]:22           [::]:*
 ```
 
 #### Tantangan
-Ubah konfigurasi SSH untuk menambahkan dua pengaturan keamanan: PermitRootLogin no
-(larang login root langsung) dan MaxAuthTries 3 (maksimal tiga kali percobaan). Lakukan
-dengan urutan yang aman: backup, edit, validasi dengan sshd -t, reload. Verifikasi perubahan
-dengan grep -E "PermitRoot|MaxAuth" /etc/ssh/sshd_config. Kemudian periksa log
-SSH untuk memastikan tidak ada error setelah perubahan dengan journalctl -u ssh -n 20.
-Referensi Bab 2 untuk penggunaan ss dan Bab 9 untuk keamanan pengguna
+Ubah konfigurasi SSH untuk menambahkan dua pengaturan keamanan: PermitRootLogin no (larang login root langsung) dan MaxAuthTries 3 (maksimal tiga kali percobaan). Lakukan dengan urutan yang aman: backup, edit, validasi dengan sshd -t, reload. Verifikasi perubahan dengan grep -E "PermitRoot|MaxAuth" /etc/ssh/sshd_config. Kemudian periksa log SSH untuk memastikan tidak ada error setelah perubahan dengan journalctl -u ssh -n 20. Referensi Bab 2 untuk penggunaan ss dan Bab 9 untuk keamanan pengguna
 
 ```bash
 galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
@@ -762,8 +744,137 @@ terlama. Tampilkan hasilnya menggunakan pipeline: systemd-analyze blame | head -
 tahu penyebabnya dengan journalctl -u nama-layanan -n 30.
 
 Jawaban:
-```bash
 
+1.
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl list-units --type=service --state=running
+  UNIT                        LOAD   ACTIVE SUB     DESCRIPTION>
+  console-getty.service       loaded active running Console Get>
+  cron.service                loaded active running Regular bac>
+  dbus.service                loaded active running D-Bus Syste>
+  demo-web.service            loaded active running Demo Web Se>
+  getty@tty1.service          loaded active running Getty on tt>
+  polkit.service              loaded active running Authorizati>
+  rsyslog.service             loaded active running System Logg>
+  ssh.service                 loaded active running OpenBSD Sec>
+  systemd-journald.service    loaded active running Journal Ser>
+  systemd-logind.service      loaded active running User Login >
+  systemd-resolved.service    loaded active running Network Nam>
+  systemd-timesyncd.service   loaded active running Network Tim>
+  systemd-udevd.service       loaded active running Rule-based >
+  unattended-upgrades.service loaded active running Unattended >
+  user@1000.service           loaded active running User Manage>
+
+Legend: LOAD   → Reflects whether the unit definition was prope>
+        ACTIVE → The high-level unit activation state, i.e. gen>
+        SUB    → The low-level unit activation state, values de>
+
+15 loaded units listed.
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl status ssh
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/usr/lib/systemd/system/ssh.service; disab>
+     Active: active (running) since Wed 2026-05-20 12:54:00 WIB>
+TriggeredBy: ● ssh.socket
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 3345 ExecStartPre=/usr/sbin/sshd -t (code=exited, >
+    Process: 3387 ExecReload=/usr/sbin/sshd -t (code=exited, st>
+    Process: 3389 ExecReload=/bin/kill -HUP $MAINPID (code=exit>
+   Main PID: 3347 (sshd)
+      Tasks: 1 (limit: 2165)
+     Memory: 1.2M (peak: 3.0M)
+        CPU: 266ms
+     CGroup: /system.slice/ssh.service
+             └─3347 "sshd: /usr/sbin/sshd -D [listener] 0 of 10>
+
+May 20 12:54:00 LAPTOP-QQ597UPT systemd[1]: Starting ssh.servic>
+May 20 12:54:00 LAPTOP-QQ597UPT sshd[3347]: Server listening on>
+May 20 12:54:00 LAPTOP-QQ597UPT sshd[3347]: Server listening on>
+May 20 12:54:00 LAPTOP-QQ597UPT systemd[1]: Started ssh.service>
+May 20 13:00:20 LAPTOP-QQ597UPT systemd[1]: Reloading ssh.servi>
+May 20 13:00:20 LAPTOP-QQ597UPT sshd[3347]: Received SIGHUP; re>
+May 20 13:00:20 LAPTOP-QQ597UPT systemd[1]: Reloaded ssh.servic>
+May 20 13:00:20 LAPTOP-QQ597UPT sshd[3347]: Server listening on>
+May 20 13:00:20 LAPTOP-QQ597UPT sshd[3347]: Server listening on>
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl status cron
+● cron.service - Regular background program processing daemon
+     Loaded: loaded (/usr/lib/systemd/system/cron.service; enab>
+     Active: active (running) since Tue 2026-05-19 20:26:02 WIB>
+       Docs: man:cron(8)
+   Main PID: 190 (cron)
+      Tasks: 1 (limit: 2165)
+     Memory: 420.0K (peak: 2.5M)
+        CPU: 23.053s
+     CGroup: /system.slice/cron.service
+             └─190 /usr/sbin/cron -f -P
+
+May 20 01:17:01 LAPTOP-QQ597UPT CRON[2334]: (root) CMD (cd / &&>
+May 20 01:17:01 LAPTOP-QQ597UPT CRON[2333]: pam_unix(cron:sessi>
+May 20 09:17:01 LAPTOP-QQ597UPT CRON[2722]: pam_unix(cron:sessi>
+May 20 09:17:01 LAPTOP-QQ597UPT CRON[2723]: (root) CMD (cd / &&>
+May 20 09:17:01 LAPTOP-QQ597UPT CRON[2722]: pam_unix(cron:sessi>
+May 20 10:17:01 LAPTOP-QQ597UPT CRON[2803]: pam_unix(cron:sessi>
+May 20 10:17:01 LAPTOP-QQ597UPT CRON[2804]: (root) CMD (cd / &&>
+May 20 10:17:01 LAPTOP-QQ597UPT CRON[2803]: pam_unix(cron:sessi>
+May 20 13:17:01 LAPTOP-QQ597UPT CRON[3405]: pam_unix(cron:sessi>
+May 20 13:17:01 LAPTOP-QQ597UPT CRON[3405]: pam_unix(cron:sessi>
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl status systemd-journald
+● systemd-journald.service - Journal Service
+     Loaded: loaded (/usr/lib/systemd/system/systemd-journald.s>
+    Drop-In: /usr/lib/systemd/system/systemd-journald.service.d
+             └─nice.conf
+     Active: active (running) since Tue 2026-05-19 20:25:54 WIB>
+TriggeredBy: ● systemd-journald-dev-log.socket
+             ○ systemd-journald-audit.socket
+             ● systemd-journald.socket
+       Docs: man:systemd-journald.service(8)
+             man:journald.conf(5)
+   Main PID: 59 (systemd-journal)
+     Status: "Processing requests..."
+      Tasks: 1 (limit: 2165)
+   FD Store: 11 (limit: 4224)
+     Memory: 9.6M (peak: 22.8M)
+        CPU: 1min 26.038s
+     CGroup: /system.slice/systemd-journald.service
+             └─59 /usr/lib/systemd/systemd-journald
+
+May 19 20:25:53 LAPTOP-QQ597UPT systemd-journald[59]: Collectin>
+May 19 20:25:53 LAPTOP-QQ597UPT systemd-journald[59]: Journal s>
+May 19 20:25:53 LAPTOP-QQ597UPT systemd-journald[59]: Runtime J>
+May 19 20:25:55 LAPTOP-QQ597UPT systemd-journald[59]: Time spen>
+May 19 20:25:55 LAPTOP-QQ597UPT systemd-journald[59]: System Jo>
+May 19 20:25:56 LAPTOP-QQ597UPT systemd-journald[59]: Received >
+May 19 20:25:56 LAPTOP-QQ597UPT systemd-journald[59]: File /var>
+May 19 20:26:08 LAPTOP-QQ597UPT systemd-journald[59]: File /var>
+May 20 09:31:29 LAPTOP-QQ597UPT systemd-journald[59]: Time jump>
+May 20 10:01:04 LAPTOP-QQ597UPT systemd-journald[59]: Time jump>
+
+Penjelasan fungsi:
+ssh             : Protokol untuk meremote (mengendalikan) server secara aman dari jarak jauh.
+cron            : Layanan untuk menjalankan tugas otomatis secara terjadwal berdasarkan waktu yang ditentukan.
+systemd-journald: Layanan yang mengumpulkan dan menyimpan data log (termasuk log sistem, kernel, dan layanan seperti SSH atau Cron).
+```
+2.
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemd-analyze blame | head -5
+ 20min 1.448s wsl-pro.service
+14min 31.074s plocate-updatedb.service
+  3min 5.679s apt-daily-upgrade.service
+   1min 716ms man-db.service
+      42.961s apt-daily.service
+```
+
+3. 
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl --failed
+  UNIT LOAD ACTIVE SUB DESCRIPTION
+
+0 loaded units listed.
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ journalctl -u nama-service -n 30
+-- No entries --
 ```
 
 ### Latihan 12.2 Layanan Kustom dengan Restart Otomatis
@@ -780,7 +891,77 @@ verifikasi bahwa layanan hidup kembali secara otomatis.
 
 Jawaban:
 ```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ nano monitor-disk.sh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ chmod +x monitor-disk.sh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo nano /etc/systemd/system/monitor-disk.service
+[sudo] password for galihcandra:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo nano /etc/systemd/system/monitor-disk.service
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl daemon-reload
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl enable --now monitor-disk.service
+Created symlink /etc/systemd/system/multi-user.target.wants/monitor-disk.service → /etc/systemd/system/monitor-disk.service.
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl status monitor-disk.service
+● monitor-disk.service - Monitor Disk Usage Service
+     Loaded: loaded (/etc/systemd/system/monitor-disk.service; >
+     Active: active (running) since Wed 2026-05-20 13:46:02 WIB>
+   Main PID: 3951 (bash)
+      Tasks: 2 (limit: 2165)
+     Memory: 568.0K (peak: 1.0M)
+        CPU: 13ms
+     CGroup: /system.slice/monitor-disk.service
+             ├─3951 /bin/bash "/home/galihcandra/Kuliah/Sem 2/p>
+             └─3954 sleep 30
 
+May 20 13:46:02 LAPTOP-QQ597UPT systemd[1]: Started monitor-dis>
+May 20 13:46:02 LAPTOP-QQ597UPT bash[3951]: /home/galihcandra/K>
+May 20 13:46:02 LAPTOP-QQ597UPT bash[3953]: /home/galihcandra/K>
+May 20 13:46:02 LAPTOP-QQ597UPT bash[3951]: /home/galihcandra/K>
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ journalctl -u monitor-disk.service -f
+May 20 13:46:02 LAPTOP-QQ597UPT bash[3951]: /home/galihcandra/Kuliah/Sem 2/praktikum-os/week12-services/monitor-disk.sh: line 7: /var/log/monitor-disk.log: Permission denied
+May 20 13:46:32 LAPTOP-QQ597UPT bash[3951]: /home/galihcandra/Kuliah/Sem 2/praktikum-os/week12-services/monitor-disk.sh: line 5: /var/log/monitor-disk.log: Permission denied
+May 20 13:46:32 LAPTOP-QQ597UPT bash[3960]: /home/galihcandra/Kuliah/Sem 2/praktikum-os/week12-services/monitor-disk.sh: line 6: /var/log/monitor-disk.log: Permission denied
+May 20 13:46:33 LAPTOP-QQ597UPT bash[3951]: /home/galihcandra/Kuliah/Sem 2/praktikum-os/week12-services/monitor-disk.sh: line 7: /var/log/monitor-disk.log: Permission denied
+May 20 13:47:02 LAPTOP-QQ597UPT bash[3951]: /home/galihcandra/Kuliah/Sem 2/praktikum-os/week12-services/monitor-disk.sh: line 5: /var/log/monitor-disk.log: Permission denied
+May 20 13:47:02 LAPTOP-QQ597UPT bash[3963]: /home/galihcandra/Kuliah/Sem 2/praktikum-os/week12-services/monitor-disk.sh: line 6: /var/log/monitor-disk.log: Permission denied
+May 20 13:47:02 LAPTOP-QQ597UPT bash[3951]: /home/galihcandra/Kuliah/Sem 2/praktikum-os/week12-services/monitor-disk.sh: line 7: /var/log/monitor-disk.log: Permission denied
+May 20 13:47:32 LAPTOP-QQ597UPT bash[3951]: /home/galihcandra/Kuliah/Sem 2/praktikum-os/week12-services/monitor-disk.sh: line 5: /var/log/monitor-disk.log: Permission denied
+May 20 13:47:32 LAPTOP-QQ597UPT bash[3966]: /home/galihcandra/Kuliah/Sem 2/praktikum-os/week12-services/monitor-disk.sh: line 6: /var/log/monitor-disk.log: Permission denied
+May 20 13:47:32 LAPTOP-QQ597UPT bash[3951]: /home/galihcandra/Kuliah/Sem 2/praktikum-os/week12-services/monitor-disk.sh: line 7: /var/log/monitor-disk.log: Permission denied
+^C
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl status monitor-disk.service | grep "Main PID"
+   Main PID: 3951 (bash)
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo kill -9 3951
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sleep 10
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl status monitor-disk.service
+● monitor-disk.service - Monitor Disk Usage Service
+     Loaded: loaded (/etc/systemd/system/monitor-disk.service; >
+     Active: active (running) since Wed 2026-05-20 13:48:17 WIB>
+   Main PID: 3980 (bash)
+      Tasks: 2 (limit: 2165)
+     Memory: 576.0K (peak: 1.0M)
+        CPU: 40ms
+     CGroup: /system.slice/monitor-disk.service
+             ├─3980 /bin/bash "/home/galihcandra/Kuliah/Sem 2/p>
+             └─3983 sleep 30
+
+May 20 13:48:17 LAPTOP-QQ597UPT systemd[1]: monitor-disk.servic>
+May 20 13:48:17 LAPTOP-QQ597UPT systemd[1]: Started monitor-dis>
+May 20 13:48:17 LAPTOP-QQ597UPT bash[3980]: /home/galihcandra/K>
+May 20 13:48:17 LAPTOP-QQ597UPT bash[3982]: /home/galihcandra/K>
+May 20 13:48:17 LAPTOP-QQ597UPT bash[3980]: /home/galihcandra/K>
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl stop monitor-disk.service
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl disable monitor-disk.service
+Removed "/etc/systemd/system/multi-user.target.wants/monitor-disk.service".
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo rm /etc/systemd/system/monitor-disk.service
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl daemon-reload
 ```
 
 ### Latihan 12.3 Investigasi Log dan Keamanan SSH
@@ -797,5 +978,60 @@ masih mendengarkan (ss -tlnp | grep ssh), dan konfigurasi baru terbaca (grep -E
 
 Jawaban:
 ```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo nano /etc/ssh/sshd_config
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo sshd -
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl reload ssh
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl status ssh
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/usr/lib/systemd/system/ssh.service; disab>
+     Active: active (running) since Wed 2026-05-20 12:54:00 WIB>
+TriggeredBy: ● ssh.socket
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 4101 ExecReload=/usr/sbin/sshd -t (code=exited, st>
+    Process: 4103 ExecReload=/bin/kill -HUP $MAINPID (code=exit>
+   Main PID: 3347 (sshd)
+      Tasks: 1 (limit: 2165)
+     Memory: 1.2M (peak: 3.0M)
+        CPU: 437ms
+     CGroup: /system.slice/ssh.service
+             └─3347 "sshd: /usr/sbin/sshd -D [listener] 0 of 10>
+
+May 20 13:00:20 LAPTOP-QQ597UPT systemd[1]: Reloading ssh.servi>
+May 20 13:00:20 LAPTOP-QQ597UPT sshd[3347]: Received SIGHUP; re>
+May 20 13:00:20 LAPTOP-QQ597UPT systemd[1]: Reloaded ssh.servic>
+May 20 13:00:20 LAPTOP-QQ597UPT sshd[3347]: Server listening on>
+May 20 13:00:20 LAPTOP-QQ597UPT sshd[3347]: Server listening on>
+May 20 13:52:50 LAPTOP-QQ597UPT systemd[1]: Reloading ssh.servi>
+May 20 13:52:50 LAPTOP-QQ597UPT systemd[1]: Reloaded ssh.servic>
+May 20 13:52:50 LAPTOP-QQ597UPT sshd[3347]: Received SIGHUP; re>
+May 20 13:52:51 LAPTOP-QQ597UPT sshd[3347]: Server listening on>
+May 20 13:52:51 LAPTOP-QQ597UPT sshd[3347]: Server listening on>
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ ss -tlnp | grep ssh
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ grep -E "PermitRoot|MaxAuth|GraceTime" /etc/ssh/sshd_config
+#LoginGraceTime 2m
+#PermitRootLogin prohibit-password
+#MaxAuthTries 6
+# the setting of "PermitRootLogin prohibit-password".
+PermitRootLogin no
+MaxAuthTries 3
+PermitRootLogin no
+MaxAuthTries 3
+LoginGraceTime 30
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo cp /etc/ssh/sshd_config.bak /etc/ssh/sshd_config
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl reload ssh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ grep -E "PermitRoot|MaxAuth|GraceTime" /etc/ssh/sshd_config
+#LoginGraceTime 2m
+#PermitRootLogin prohibit-password
+#MaxAuthTries 6
+# the setting of "PermitRootLogin prohibit-password".
+PermitRootLogin no
+MaxAuthTries 3
 ```
