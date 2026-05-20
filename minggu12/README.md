@@ -91,6 +91,10 @@ galihcandra@LAPTOP-QQ597UPT:~$ systemd-analyze blame | head -15
 ```
 
 ### Tantangan
+Identifikasi tiga layanan dengan waktu inisialisasi terlama menggunakan systemd-analyze
+blame. Gunakan pipeline dari Bab 3 (| sort -rh | head -3) untuk mempercepat pencariannya. Untuk setiap layanan, cari tahu fungsinya dengan systemctl cat nama-layanan.
+Tuliskan nama layanan, waktu inisialisasinya, dan penjelasan singkat fungsinya.
+
 ```bash
 galihcandra@LAPTOP-QQ597UPT:~$ systemd-analyze blame | sort -rh | head -3
        992ms dev-hugepages.mount
@@ -278,6 +282,12 @@ galihcandra@LAPTOP-QQ597UPT:~$ systemctl --failed
 ```
 
 ### Tantangan
+Buat skrip Bash (referensi Bab 7) bernama cek-layanan.sh yang memeriksa status daftar layanan
+dari sebuah berkas teks. Berkas teks daftar-layanan.txt berisi satu nama layanan per baris (isi
+minimal: ssh, cron, rsyslog). Skrip membaca setiap nama layanan, memeriksa statusnya dengan
+systemctl is-active, lalu menulis laporan ke berkas laporan-layanan.log dengan format:
+[TANGGAL] nama-layanan: ACTIVE/INACTIVE. Gunakan date untuk mendapatkan tanggal.
+
 ```bash
 galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12/scripts$ nano daftar-layanan.txt
 galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12/scripts$ nano cek-layanan.sh
@@ -434,6 +444,13 @@ galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo sy
 ```
 
 ### Tantangan
+Modifikasi berkas unit demo-web.service sebelum menghapusnya: tambahkan
+RestartSec=10s agar sistemmenunggu 10 detik sebelum mencoba restart, dan tambahkan
+Environment="PORT=9091" lalu ubah ExecStart agar menggunakan variabel tersebut. Aktifkan
+layanan dengan enable dan WantedBy=multi-user.target, lalu uji apakah layanan aktif
+setelah systemctl daemon-reload. Dokumentasikan perbedaan perilaku dibanding versi
+sebelumnya
+
 ```bash
 galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo nano /etc/systemd/system/demo-web.service
 galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl daemon-reload
@@ -572,6 +589,11 @@ galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ grep -i
 ```
 
 ### Tantangan
+Ekstrak semua log dengan prioritas error (-p err) dari 24 jam terakhir untuk layanan SSH, simpan
+ke berkas error-ssh-24jam.txt. Gunakan pipeline dari Bab 3 untuk menghitung total jumlah
+baris error dengan wc -l, lalu tampilkan 10 pesan error yang paling sering muncul menggunakan
+sort | uniq -c | sort -rn | head -10. Tuliskan perintah lengkap yang kamu gunakan.
+
 ```bash
 Perintah lengkap:
 journalctl -u ssh -p err --since "24 hours ago" --no-pager > error-ssh-24jam.txt
@@ -590,7 +612,125 @@ galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sort er
 
 ## Praktek 12.5: Konfigurasi SSH Server
 ```bash
+sudo grep -n "^Port \|^#Port " /etc/ssh/sshd_config
+ss -tlnp | grep ssh
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup.lab12
+sudo sed -i 's/^#Port 22/Port 2222/' /etc/ssh/sshd_config
+grep "^Port " /etc/ssh/sshd_config
+sudo sshd -t
+echo "Kode keluar sshd -t: $?"
+sudo systemctl restart ssh
+systemctl status ssh
+ss -tlnp | grep ssh
+ss -tlnp | grep ssh > ~/week12-services/bukti-port-ssh.txt
+cat ~/week12-services/bukti-port-ssh.txt
+sudo cp /etc/ssh/sshd_config.backup.lab12 /etc/ssh/sshd_config
+sudo sshd -t
+sudo systemctl restart ssh
+ss -tlnp | grep ssh
 
+Output:
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo grep -n "^Port \|^#Port " /etc/ssh/sshd_config
+[sudo] password for galihcandra:
+23:#Port 22
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ ss -tlnp | grep ssh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ ss -tlnp | grep sshd
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ ss -tlnp | grep 22
+LISTEN 0      4096          0.0.0.0:22        0.0.0.0:*         
+LISTEN 0      4096             [::]:22           [::]:*         
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup.lab12
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo sed -i 's/^#Port 22/Port 2222/' /etc/ssh/sshd_config
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ grep "^Port " /etc/ssh/sshd_config
+Port 2222
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo sshd -t
+galihcandra@LAPTOP-QQ597UPT:~$ echo "Kode keluar sshd -t: $?"
+Kode keluar sshd -t: 0
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl restart ssh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ systemctl status ssh
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/usr/lib/systemd/system/ssh.service; disab>
+     Active: active (running) since Wed 2026-05-20 12:30:05 WIB>
+TriggeredBy: ● ssh.socket
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 2880 ExecStartPre=/usr/sbin/sshd -t (code=exited, >
+   Main PID: 2882 (sshd)
+      Tasks: 1 (limit: 2165)
+     Memory: 1.2M (peak: 1.4M)
+        CPU: 163ms
+     CGroup: /system.slice/ssh.service
+             └─2882 "sshd: /usr/sbin/sshd -D [listener] 0 of 10>
+
+May 20 12:30:05 LAPTOP-QQ597UPT systemd[1]: Starting ssh.servic>
+May 20 12:30:05 LAPTOP-QQ597UPT sshd[2882]: Server listening on>
+May 20 12:30:05 LAPTOP-QQ597UPT sshd[2882]: Server listening on>
+May 20 12:30:05 LAPTOP-QQ597UPT systemd[1]: Started ssh.service>
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo ss -tlnp | grep 2222
+LISTEN 0      128           0.0.0.0:2222      0.0.0.0:*    users:(("sshd",pid=2952,fd=3))
+LISTEN 0      128              [::]:2222         [::]:*    users:(("sshd",pid=2952,fd=4))
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo ss -tlnp | grep 2222
+LISTEN 0      128           0.0.0.0:2222      0.0.0.0:*    users:(("sshd",pid=2952,fd=3))
+LISTEN 0      128              [::]:2222         [::]:*    users:(("sshd",pid=2952,fd=4))
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo ss -tlnp | grep 2222 > ~/Kuliah/Sem\ 2/praktikum-os/week12-services/bukti-port-ssh.txt
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ cat ~/Kuliah/Sem\ 2/praktikum-os/week12-services/bukti-port-ssh.txt
+LISTEN 0      128           0.0.0.0:2222      0.0.0.0:*    users:(("sshd",pid=2952,fd=3))
+LISTEN 0      128              [::]:2222         [::]:*    users:(("sshd",pid=2952,fd=4))
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo cp /etc/ssh/sshd_config.backup.lab12 /etc/ssh/sshd_config
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo sshd -t
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl restart ssh
+
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ ss -tlnp | grep 22
+LISTEN 0      4096          0.0.0.0:22        0.0.0.0:*         
+LISTEN 0      4096             [::]:22           [::]:*   
+```
+
+#### Tantangan
+Ubah konfigurasi SSH untuk menambahkan dua pengaturan keamanan: PermitRootLogin no
+(larang login root langsung) dan MaxAuthTries 3 (maksimal tiga kali percobaan). Lakukan
+dengan urutan yang aman: backup, edit, validasi dengan sshd -t, reload. Verifikasi perubahan
+dengan grep -E "PermitRoot|MaxAuth" /etc/ssh/sshd_config. Kemudian periksa log
+SSH untuk memastikan tidak ada error setelah perubahan dengan journalctl -u ssh -n 20.
+Referensi Bab 2 untuk penggunaan ss dan Bab 9 untuk keamanan pengguna
+
+```bash
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo nano /etc/ssh/sshd_config
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo sshd -t
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ sudo systemctl reload ssh
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ grep -E "PermitRoot|MaxAuth" /etc/ssh/sshd_config
+#PermitRootLogin prohibit-password
+#MaxAuthTries 6
+# the setting of "PermitRootLogin prohibit-password".
+PermitRootLogin no
+MaxAuthTries 3
+galihcandra@LAPTOP-QQ597UPT:~/Kuliah/Sem 2/praktikum-os/week12-services$ journalctl -u ssh -n 20
+May 20 12:49:08 LAPTOP-QQ597UPT systemd[1]: ssh.service: Deacti>
+May 20 12:49:08 LAPTOP-QQ597UPT systemd[1]: Stopped ssh.service>
+May 20 12:49:08 LAPTOP-QQ597UPT systemd[1]: ssh.service: Consum>
+May 20 12:49:43 LAPTOP-QQ597UPT systemd[1]: Starting ssh.servic>
+May 20 12:49:43 LAPTOP-QQ597UPT sshd[3328]: Server listening on>
+May 20 12:49:43 LAPTOP-QQ597UPT sshd[3328]: Server listening on>
+May 20 12:49:43 LAPTOP-QQ597UPT systemd[1]: Started ssh.service>
+May 20 12:54:00 LAPTOP-QQ597UPT sshd[3328]: Received signal 15;>
+May 20 12:54:00 LAPTOP-QQ597UPT systemd[1]: Stopping ssh.servic>
+May 20 12:54:00 LAPTOP-QQ597UPT systemd[1]: ssh.service: Deacti>
+May 20 12:54:00 LAPTOP-QQ597UPT systemd[1]: Stopped ssh.service>
+May 20 12:54:00 LAPTOP-QQ597UPT systemd[1]: Starting ssh.servic>
+May 20 12:54:00 LAPTOP-QQ597UPT sshd[3347]: Server listening on>
+May 20 12:54:00 LAPTOP-QQ597UPT sshd[3347]: Server listening on>
+May 20 12:54:00 LAPTOP-QQ597UPT systemd[1]: Started ssh.service>
+May 20 13:00:20 LAPTOP-QQ597UPT systemd[1]: Reloading ssh.servi>
+May 20 13:00:20 LAPTOP-QQ597UPT sshd[3347]: Received SIGHUP; re>
+May 20 13:00:20 LAPTOP-QQ597UPT systemd[1]: Reloaded ssh.servic>
+May 20 13:00:20 LAPTOP-QQ597UPT sshd[3347]: Server listening on>
+May 20 13:00:20 LAPTOP-QQ597UPT sshd[3347]: Server listening on>
 ```
 
 ## 1.6 Rangkuman
